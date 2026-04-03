@@ -1,19 +1,44 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeft, ArrowRight, User, Brain, Briefcase, BookOpen,
+  ArrowLeft, ArrowRight, User, Brain, Briefcase, BookOpen, Heart,
   Sparkles, CheckCircle2, ChevronRight,
 } from "lucide-react";
 import { mbtiQuestions, hollandOptions, learningStyleOptions, computeMBTI, getPersonalityMapping } from "@/data/quiz";
 import DynamicIcon from "@/components/DynamicIcon";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+
+const interestOptions = [
+  { id: "gaming", label: "🎮 Gaming", description: "PC/console/mobile gaming" },
+  { id: "competitive-coding", label: "💻 Competitive Coding", description: "LeetCode, Codeforces, contests" },
+  { id: "robotics", label: "🤖 Robotics", description: "Building & programming robots" },
+  { id: "electronics", label: "⚡ Electronics", description: "Circuits, Arduino, hardware" },
+  { id: "web-design", label: "🎨 Web Design", description: "Beautiful websites & UI" },
+  { id: "mobile-apps", label: "📱 Mobile Apps", description: "Building phone apps" },
+  { id: "ai-chatbots", label: "🧠 AI & Chatbots", description: "Machine learning, AI tools" },
+  { id: "hacking", label: "🔐 Hacking", description: "Cybersecurity, CTFs" },
+  { id: "blogging", label: "✍️ Blogging", description: "Writing tech content" },
+  { id: "open-source", label: "🌐 Open Source", description: "Contributing to OSS" },
+  { id: "finance", label: "📊 Finance", description: "Stocks, trading, fintech" },
+  { id: "design", label: "🖌️ Design", description: "UI/UX, Figma, graphics" },
+  { id: "math", label: "📐 Math", description: "Pure math, algorithms" },
+  { id: "physics", label: "🔬 Physics", description: "Mechanics, electronics" },
+  { id: "business", label: "💼 Business", description: "Startups, entrepreneurship" },
+  { id: "teaching", label: "📚 Teaching", description: "Tutoring, mentoring others" },
+  { id: "public-speaking", label: "🎤 Public Speaking", description: "Conferences, talks" },
+  { id: "music", label: "🎵 Music", description: "Music production, audio" },
+  { id: "crypto", label: "🪙 Crypto", description: "Blockchain, Web3, DeFi" },
+  { id: "3d-modeling", label: "🏗️ 3D Modeling", description: "CAD, Blender, game assets" },
+];
 
 const steps = [
   { title: "About You", icon: User },
   { title: "Personality", icon: Brain },
   { title: "Work Style", icon: Briefcase },
   { title: "Learning", icon: BookOpen },
+  { title: "Interests", icon: Heart },
 ];
 
 export default function OnboardingPage() {
@@ -25,6 +50,19 @@ export default function OnboardingPage() {
   const [mbtiAnswers, setMbtiAnswers] = useState<Record<string, string>>({});
   const [selectedHolland, setSelectedHolland] = useState<string[]>([]);
   const [learningStyle, setLearningStyle] = useState("");
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const supabase = createClient();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsAuthenticated(!!user);
+    };
+    checkAuth();
+  }, []);
 
   const canProceed = () => {
     switch (currentStep) {
@@ -32,19 +70,61 @@ export default function OnboardingPage() {
       case 1: return Object.keys(mbtiAnswers).length >= mbtiQuestions.length;
       case 2: return selectedHolland.length >= 2;
       case 3: return learningStyle !== "";
+      case 4: return selectedInterests.length >= 2;
       default: return false;
     }
   };
 
-  const handleFinish = () => {
+  const toggleInterest = (id: string) => {
+    setSelectedInterests((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleFinish = async () => {
     const mbti = computeMBTI(mbtiAnswers);
     const hollandCode = selectedHolland.slice(0, 3).join("");
+    const personality = getPersonalityMapping(mbti);
+
     const profile = {
-      year, goal, hoursPerWeek: hours,
-      mbtiType: mbti, hollandCode, learningStyle,
-      recommendedPaths: getPersonalityMapping(mbti).recommendedPaths,
+      year,
+      goal,
+      hoursPerWeek: hours,
+      mbtiType: mbti,
+      hollandCode,
+      learningStyle,
+      interests: selectedInterests,
+      recommendedPaths: personality.recommendedPaths,
     };
+
+    // Always save to localStorage as fallback
     localStorage.setItem("careerforge-profile", JSON.stringify(profile));
+
+    // If authenticated, save to Supabase
+    if (isAuthenticated) {
+      setSaving(true);
+      try {
+        await fetch("/api/profile", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            year,
+            goal,
+            hours_per_week: hours,
+            mbti_type: mbti,
+            holland_code: hollandCode,
+            learning_style: learningStyle,
+            interests: selectedInterests,
+            recommended_paths: personality.recommendedPaths,
+            onboarding_complete: true,
+          }),
+        });
+      } catch (err) {
+        console.error("Failed to save profile:", err);
+      }
+      setSaving(false);
+    }
+
     setShowResults(true);
   };
 
@@ -241,6 +321,28 @@ export default function OnboardingPage() {
               </div>
             </div>
           )}
+
+          {currentStep === 4 && (
+            <div>
+              <h2 className="font-bold font-heading" style={{ fontSize: "1.5rem", marginBottom: "12px" }}>Interests & Hobbies</h2>
+              <p className="text-muted" style={{ marginBottom: "40px" }}>Select 2 or more interests — this helps us recommend non-obvious career paths.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                {interestOptions.map((opt) => {
+                  const sel = selectedInterests.includes(opt.id);
+                  return (
+                    <button key={opt.id} onClick={() => toggleInterest(opt.id)}
+                      className="glass-card"
+                      style={{ padding: "16px 20px", textAlign: "left", cursor: "pointer", transition: "all 0.2s", ...(sel ? { borderColor: "rgba(99,102,241,0.35)", background: "rgba(99,102,241,0.08)" } : {}) }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                        <span style={{ fontSize: "0.92rem", fontWeight: 500, color: sel ? "#818cf8" : "#f1f5f9" }}>{opt.label}</span>
+                      </div>
+                      <p style={{ fontSize: "0.72rem", color: "#94a3b8", lineHeight: 1.5 }}>{opt.description}</p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
 
@@ -264,10 +366,10 @@ export default function OnboardingPage() {
         ) : (
           <button
             onClick={handleFinish}
-            disabled={!canProceed()}
+            disabled={!canProceed() || saving}
             style={{ display: "flex", alignItems: "center", gap: "8px", padding: "12px 28px", borderRadius: "12px", background: canProceed() ? "linear-gradient(135deg, #10b981, #059669)" : "#1e293b", color: "#fff", fontSize: "0.9rem", fontWeight: 600, border: "none", cursor: canProceed() ? "pointer" : "not-allowed", opacity: canProceed() ? 1 : 0.4 }}
           >
-            <Sparkles style={{ width: "16px", height: "16px" }} /> See Results
+            <Sparkles style={{ width: "16px", height: "16px" }} /> {saving ? "Saving..." : "See Results"}
           </button>
         )}
       </div>

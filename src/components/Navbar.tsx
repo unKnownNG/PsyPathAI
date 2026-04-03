@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, Menu, X } from "lucide-react";
 import { useState } from "react";
+import AuthButton from "@/components/AuthButton";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -53,13 +54,9 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:block">
-            <Link href="/onboarding"
-              style={{ padding: "10px 22px", borderRadius: "10px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", fontSize: "0.88rem", fontWeight: 600, textDecoration: "none" }}
-            >
-              Get Started
-            </Link>
+          {/* Auth Button */}
+          <div className="hidden md:flex" style={{ alignItems: "center" }}>
+            <AuthButton />
           </div>
 
           {/* Mobile toggle */}
@@ -85,11 +82,9 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link href="/onboarding" onClick={() => setMobileOpen(false)}
-                style={{ display: "block", padding: "12px 16px", borderRadius: "10px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", fontSize: "0.88rem", fontWeight: 600, textAlign: "center", marginTop: "8px", textDecoration: "none" }}
-              >
-                Get Started
-              </Link>
+              <div style={{ marginTop: "8px" }}>
+                <AuthButton />
+              </div>
             </div>
           </motion.div>
         )}

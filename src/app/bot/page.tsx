@@ -1,9 +1,38 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Brain, Target, BookOpen, Sparkles, ExternalLink, User, Bot } from "lucide-react";
-import { mockChatMessages, suggestedPrompts } from "@/data/chat";
-import { ChatMessage, UserProfile, Resource } from "@/data/types";
+import { Send, Brain, Sparkles, User, Bot, Plus, MessageSquare } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+
+interface ChatMessage {
+  id: string;
+  role: "user" | "bot";
+  content: string;
+  timestamp: string;
+}
+
+interface ChatSession {
+  id: string;
+  title: string;
+  created_at: string;
+}
+
+interface UserProfile {
+  mbtiType: string;
+  hollandCode: string;
+  goal: string;
+  year: string;
+  recommendedPaths: string[];
+  learningStyle: string;
+  interests: string[];
+}
+
+const suggestedPrompts = [
+  "What career path suits my personality?",
+  "Help me create a 6-month learning plan",
+  "Should I focus on frontend or backend?",
+  "How do I prepare for FAANG interviews?",
+];
 
 function TypingIndicator() {
   return (
@@ -44,34 +73,6 @@ function MessageBubble({ message }: { message: ChatMessage }) {
         }}>
           <p style={{ whiteSpace: "pre-wrap" }}>{message.content}</p>
         </div>
-
-        {message.milestones && message.milestones.length > 0 && (
-          <div style={{ marginTop: "10px", padding: "16px", borderRadius: "12px", background: "rgba(17,24,39,0.5)", border: "1px solid rgba(148,163,184,0.1)", textAlign: "left" }}>
-            <p style={{ fontSize: "0.75rem", color: "#818cf8", fontWeight: 600, marginBottom: "10px", display: "flex", alignItems: "center", gap: "4px" }}>
-              <Target style={{ width: "12px", height: "12px" }} /> Milestone Plan
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              {message.milestones.map((m, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "0.78rem", color: "#94a3b8" }}>
-                  <span style={{ width: "20px", height: "20px", borderRadius: "6px", background: "rgba(99,102,241,0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "0.65rem", color: "#818cf8", fontWeight: 700, marginTop: "2px" }}>{i + 1}</span>
-                  {m}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {message.resources && message.resources.length > 0 && (
-          <div style={{ marginTop: "10px", display: "flex", flexWrap: "wrap", gap: "6px" }}>
-            {message.resources.map((r: Resource, i: number) => (
-              <a key={i} href={r.url} target="_blank" rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 12px", borderRadius: "8px", background: "#111827", border: "1px solid rgba(148,163,184,0.1)", fontSize: "0.75rem", color: "#cbd5e1", textDecoration: "none" }}>
-                <BookOpen style={{ width: "12px", height: "12px" }} /> {r.title} <ExternalLink style={{ width: "10px", height: "10px" }} />
-              </a>
-            ))}
-          </div>
-        )}
-
         <p style={{ fontSize: "0.65rem", color: "#64748b", marginTop: "6px", padding: "0 4px" }}>{message.timestamp}</p>
       </div>
     </motion.div>
@@ -79,44 +80,202 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 }
 
 export default function BotPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>(mockChatMessages);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const supabase = createClient();
 
+  // Check auth and load profile
   useEffect(() => {
-    const stored = localStorage.getItem("careerforge-profile");
-    if (stored) setProfile(JSON.parse(stored));
+    const init = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsAuthenticated(!!user);
+
+      if (user) {
+        // Load profile from API
+        try {
+          const res = await fetch("/api/profile");
+          if (res.ok) {
+            const data = await res.json();
+            if (data.profile) {
+              setProfile({
+                mbtiType: data.profile.mbti_type || "",
+                hollandCode: data.profile.holland_code || "",
+                goal: data.profile.goal || "",
+                year: data.profile.year || "",
+                recommendedPaths: data.profile.recommended_paths || [],
+                learningStyle: data.profile.learning_style || "",
+                interests: data.profile.interests || [],
+              });
+            }
+          }
+        } catch { /* fallback to localStorage */ }
+
+        // Load sessions
+        try {
+          const res = await fetch("/api/chat/sessions");
+          if (res.ok) {
+            const data = await res.json();
+            setSessions(data.sessions || []);
+          }
+        } catch { /* ignore */ }
+      }
+
+      // Fallback to localStorage for profile
+      if (!profile) {
+        const stored = localStorage.getItem("careerforge-profile");
+        if (stored) {
+          try { setProfile(JSON.parse(stored)); } catch { /* ignore */ }
+        }
+      }
+    };
+    init();
   }, []);
+
+  // Load messages for active session
+  useEffect(() => {
+    if (!activeSessionId) return;
+    const loadMessages = async () => {
+      try {
+        const res = await fetch(`/api/chat/messages?sessionId=${activeSessionId}`);
+        if (res.ok) {
+          const data = await res.json();
+          const loaded: ChatMessage[] = (data.messages || []).map((m: { id: string; role: string; content: string; created_at: string }) => ({
+            id: m.id,
+            role: m.role as "user" | "bot",
+            content: m.content,
+            timestamp: new Date(m.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          }));
+          setMessages(loaded);
+        }
+      } catch { /* ignore */ }
+    };
+    loadMessages();
+  }, [activeSessionId]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  const handleSend = (text?: string) => {
+  const handleSend = useCallback(async (text?: string) => {
     const msg = text || input.trim();
-    if (!msg) return;
-    const userMsg: ChatMessage = { id: `u-${Date.now()}`, role: "user", content: msg, timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) };
+    if (!msg || isTyping) return;
+
+    const userMsg: ChatMessage = {
+      id: `u-${Date.now()}`,
+      role: "user",
+      content: msg,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsTyping(true);
-    setTimeout(() => {
-      const botMsg: ChatMessage = {
-        id: `b-${Date.now()}`, role: "bot",
-        content: `That's a great question! Based on ${profile ? `your ${profile.mbtiType} personality type and interest in ${profile.goal}` : "your interests"}, I'd recommend focusing on building practical projects alongside your learning path.\n\nWould you like me to suggest specific projects or dive deeper into any particular area?`,
-        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      };
-      setMessages((prev) => [...prev, botMsg]);
-      setIsTyping(false);
-    }, 1500);
+
+    if (isAuthenticated) {
+      // Real API call with streaming
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: msg,
+            sessionId: activeSessionId,
+          }),
+        });
+
+        // Get session ID from header
+        const newSessionId = res.headers.get("X-Session-Id");
+        if (newSessionId && !activeSessionId) {
+          setActiveSessionId(newSessionId);
+          // Refresh sessions list
+          const sessRes = await fetch("/api/chat/sessions");
+          if (sessRes.ok) {
+            const sessData = await sessRes.json();
+            setSessions(sessData.sessions || []);
+          }
+        }
+
+        if (res.headers.get("Content-Type")?.includes("text/plain")) {
+          // Streaming response
+          const reader = res.body?.getReader();
+          const decoder = new TextDecoder();
+          let botContent = "";
+          const botId = `b-${Date.now()}`;
+
+          // Add empty bot message
+          setMessages((prev) => [...prev, {
+            id: botId,
+            role: "bot",
+            content: "",
+            timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          }]);
+          setIsTyping(false);
+
+          if (reader) {
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              botContent += decoder.decode(value, { stream: true });
+              const currentContent = botContent;
+              setMessages((prev) => prev.map((m) =>
+                m.id === botId ? { ...m, content: currentContent } : m
+              ));
+            }
+          }
+        } else {
+          // Non-streaming fallback (JSON response)
+          const data = await res.json();
+          setMessages((prev) => [...prev, {
+            id: `b-${Date.now()}`,
+            role: "bot",
+            content: data.message || data.error || "Something went wrong.",
+            timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          }]);
+          setIsTyping(false);
+        }
+      } catch (err) {
+        console.error("Chat error:", err);
+        setMessages((prev) => [...prev, {
+          id: `b-${Date.now()}`,
+          role: "bot",
+          content: "Sorry, I couldn't connect to the server. Please try again.",
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        }]);
+        setIsTyping(false);
+      }
+    } else {
+      // Not authenticated — show a prompt to sign in
+      setTimeout(() => {
+        setMessages((prev) => [...prev, {
+          id: `b-${Date.now()}`,
+          role: "bot",
+          content: `Great question! To give you personalized, psychology-aware career advice, I need to know your personality profile.\n\n**Sign in** (top right) and take the quiz first — then I can:\n• Analyze your MBTI type & Holland code\n• Recommend career paths tailored to YOUR personality\n• Create custom milestone plans\n• Frame advice in a way that resonates with how you think\n\nOnce you're signed in, I'll have access to 6 specialized psychology tools to help guide your career! 🚀`,
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        }]);
+        setIsTyping(false);
+      }, 800);
+    }
+  }, [input, isTyping, isAuthenticated, activeSessionId]);
+
+  const handleNewChat = async () => {
+    setMessages([]);
+    setActiveSessionId(null);
+  };
+
+  const handleSelectSession = (session: ChatSession) => {
+    setActiveSessionId(session.id);
   };
 
   return (
     <div style={{ height: "calc(100vh - 68px)", display: "flex" }}>
       {/* Sidebar */}
       <div className="hidden lg:flex" style={{ width: "280px", flexShrink: 0, flexDirection: "column", borderRight: "1px solid rgba(148,163,184,0.1)", background: "rgba(2,6,23,0.4)", padding: "24px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "32px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
           <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "linear-gradient(135deg, #6366f1, #34d399)", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Sparkles style={{ width: "20px", height: "20px", color: "#fff" }} />
           </div>
@@ -126,30 +285,51 @@ export default function BotPage() {
           </div>
         </div>
 
-        {profile ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div className="glass-card" style={{ padding: "20px" }}>
-              <h3 className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "16px" }}>Your Profile</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {[{ label: "MBTI", value: profile.mbtiType }, { label: "Holland", value: profile.hollandCode }, { label: "Goal", value: profile.goal }, { label: "Year", value: profile.year }].map((item) => (
-                  <div key={item.label} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
-                    <span className="text-muted">{item.label}</span>
-                    <span className="font-mono text-indigo-400" style={{ fontWeight: 600, fontSize: "0.78rem" }}>{item.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="glass-card" style={{ padding: "20px" }}>
-              <h3 className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "16px" }}>Top Suggestions</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {profile.recommendedPaths.map((p) => (
-                  <div key={p} className="text-muted" style={{ padding: "10px 12px", borderRadius: "10px", background: "rgba(17,24,39,0.6)", fontSize: "0.8rem", textTransform: "capitalize" }}>{p.replace(/-/g, " ")}</div>
-                ))}
-              </div>
+        {/* New Chat button */}
+        <button onClick={handleNewChat}
+          style={{ width: "100%", display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "10px", background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", color: "#818cf8", fontSize: "0.85rem", fontWeight: 500, cursor: "pointer", marginBottom: "16px" }}>
+          <Plus style={{ width: "14px", height: "14px" }} /> New Chat
+        </button>
+
+        {/* Chat sessions */}
+        {sessions.length > 0 && (
+          <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "4px", marginBottom: "16px" }}>
+            <p className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px" }}>Recent Chats</p>
+            {sessions.map((s) => (
+              <button key={s.id} onClick={() => handleSelectSession(s)}
+                style={{
+                  width: "100%", display: "flex", alignItems: "center", gap: "8px", padding: "10px 12px", borderRadius: "8px",
+                  background: activeSessionId === s.id ? "rgba(99,102,241,0.1)" : "transparent",
+                  border: activeSessionId === s.id ? "1px solid rgba(99,102,241,0.2)" : "1px solid transparent",
+                  color: "#cbd5e1", fontSize: "0.8rem", cursor: "pointer", textAlign: "left", transition: "all 0.15s",
+                }}>
+                <MessageSquare style={{ width: "13px", height: "13px", flexShrink: 0, color: "#64748b" }} />
+                <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{s.title}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Profile card */}
+        {profile && profile.mbtiType ? (
+          <div className="glass-card" style={{ padding: "20px", marginTop: "auto" }}>
+            <h3 className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "16px" }}>Your Profile</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {[
+                { label: "MBTI", value: profile.mbtiType },
+                { label: "Holland", value: profile.hollandCode },
+                { label: "Goal", value: profile.goal },
+                { label: "Year", value: profile.year },
+              ].map((item) => (
+                <div key={item.label} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+                  <span className="text-muted">{item.label}</span>
+                  <span className="font-mono text-indigo-400" style={{ fontWeight: 600, fontSize: "0.78rem" }}>{item.value}</span>
+                </div>
+              ))}
             </div>
           </div>
         ) : (
-          <div className="glass-card" style={{ padding: "24px", textAlign: "center" }}>
+          <div className="glass-card" style={{ padding: "24px", textAlign: "center", marginTop: "auto" }}>
             <Brain className="text-muted" style={{ width: "32px", height: "32px", margin: "0 auto 12px" }} />
             <p className="text-muted" style={{ fontSize: "0.88rem", marginBottom: "16px" }}>Take the quiz to see your profile here</p>
             <a href="/onboarding" className="text-indigo-400" style={{ fontSize: "0.8rem", fontWeight: 500, textDecoration: "none" }}>Take Quiz →</a>
@@ -160,6 +340,17 @@ export default function BotPage() {
       {/* Chat */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
         <div style={{ flex: 1, overflowY: "auto", padding: "24px 32px", display: "flex", flexDirection: "column", gap: "24px" }}>
+          {messages.length === 0 && (
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "24px", opacity: 0.8 }}>
+              <div style={{ width: "64px", height: "64px", borderRadius: "20px", background: "linear-gradient(135deg, #6366f1, #34d399)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Sparkles style={{ width: "32px", height: "32px", color: "#fff" }} />
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <h3 className="font-heading font-bold" style={{ fontSize: "1.2rem", marginBottom: "8px" }}>Welcome to CareerBot</h3>
+                <p className="text-muted" style={{ fontSize: "0.88rem" }}>Your AI career advisor powered by psychology</p>
+              </div>
+            </div>
+          )}
           <AnimatePresence>
             {messages.map((msg) => <MessageBubble key={msg.id} message={msg} />)}
           </AnimatePresence>
@@ -167,10 +358,10 @@ export default function BotPage() {
           <div ref={chatEndRef} />
         </div>
 
-        {messages.length <= mockChatMessages.length && (
+        {messages.length === 0 && (
           <div style={{ padding: "0 32px 12px" }}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {suggestedPrompts.slice(0, 4).map((prompt) => (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center" }}>
+              {suggestedPrompts.map((prompt) => (
                 <button key={prompt} onClick={() => handleSend(prompt)}
                   style={{ padding: "8px 16px", borderRadius: "10px", background: "rgba(17,24,39,0.6)", border: "1px solid rgba(148,163,184,0.1)", fontSize: "0.78rem", color: "#cbd5e1", cursor: "pointer" }}>
                   {prompt}
@@ -186,11 +377,11 @@ export default function BotPage() {
               type="text" value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Ask CareerBot anything..."
+              placeholder={isAuthenticated ? "Ask CareerBot anything..." : "Sign in to chat with CareerBot..."}
               style={{ flex: 1, padding: "14px 20px", borderRadius: "14px", background: "#111827", border: "1px solid rgba(148,163,184,0.12)", color: "#f1f5f9", fontSize: "0.9rem", outline: "none" }}
             />
-            <button onClick={() => handleSend()} disabled={!input.trim()}
-              style={{ width: "48px", height: "48px", borderRadius: "14px", background: input.trim() ? "linear-gradient(135deg, #6366f1, #4f46e5)" : "#1e293b", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", border: "none", cursor: input.trim() ? "pointer" : "not-allowed", flexShrink: 0, opacity: input.trim() ? 1 : 0.4 }}>
+            <button onClick={() => handleSend()} disabled={!input.trim() || isTyping}
+              style={{ width: "48px", height: "48px", borderRadius: "14px", background: input.trim() && !isTyping ? "linear-gradient(135deg, #6366f1, #4f46e5)" : "#1e293b", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", border: "none", cursor: input.trim() && !isTyping ? "pointer" : "not-allowed", flexShrink: 0, opacity: input.trim() && !isTyping ? 1 : 0.4 }}>
               <Send style={{ width: "16px", height: "16px" }} />
             </button>
           </div>
