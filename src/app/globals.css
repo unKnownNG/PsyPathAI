@@ -158,3 +158,23 @@ body {
   border: none; border-top: 1px solid rgba(148, 163, 184, 0.12);
   margin: 0.8em 0;
 }
+
+/* ── Mobile Responsive Utilities ── */
+.md-two-col {
+  grid-template-columns: 1fr !important;
+}
+@media (min-width: 768px) {
+  .md-two-col {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 48px !important;
+  }
+}
+
+/* Reduce section padding on mobile */
+@media (max-width: 640px) {
+  section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+

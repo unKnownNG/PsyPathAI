@@ -66,7 +66,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
       }}>
         {isUser ? <User style={{ width: "16px", height: "16px", color: "#94a3b8" }} /> : <Bot style={{ width: "16px", height: "16px", color: "#fff" }} />}
       </div>
-      <div style={{ maxWidth: "75%", ...(isUser ? { textAlign: "right" as const } : {}) }}>
+      <div style={{ maxWidth: "min(75%, calc(100vw - 100px))", ...(isUser ? { textAlign: "right" as const } : {}) }}>
         <div style={{
           padding: "14px 20px", borderRadius: "16px", fontSize: "0.9rem", lineHeight: 1.7,
           ...(isUser
@@ -370,7 +370,7 @@ export default function BotPage() {
 
       {/* Chat area */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        <div style={{ flex: 1, overflowY: "auto", padding: "24px 32px", display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div style={{ flex: 1, overflowY: "auto", padding: "24px clamp(12px, 3vw, 32px)", display: "flex", flexDirection: "column", gap: "24px" }}>
           {messages.length === 0 && (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "24px", opacity: 0.8 }}>
               <div style={{ width: "64px", height: "64px", borderRadius: "20px", background: "linear-gradient(135deg, #6366f1, #34d399)", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -389,7 +389,7 @@ export default function BotPage() {
         </div>
 
         {messages.length === 0 && (
-          <div style={{ padding: "0 32px 12px" }}>
+          <div style={{ padding: "0 clamp(12px, 3vw, 32px) 12px" }}>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center" }}>
               {suggestedPrompts.map((prompt) => (
                 <button key={prompt} onClick={() => handleSend(prompt)}
@@ -401,7 +401,7 @@ export default function BotPage() {
           </div>
         )}
 
-        <div style={{ padding: "20px 32px", borderTop: "1px solid rgba(148,163,184,0.1)", background: "rgba(5,10,21,0.85)", backdropFilter: "blur(24px)" }}>
+        <div style={{ padding: "14px clamp(12px, 3vw, 32px)", borderTop: "1px solid rgba(148,163,184,0.1)", background: "rgba(5,10,21,0.85)", backdropFilter: "blur(24px)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", maxWidth: "720px", margin: "0 auto" }}>
             <input
               type="text" value={input}

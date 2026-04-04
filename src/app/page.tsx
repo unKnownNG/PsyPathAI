@@ -138,7 +138,7 @@ export default function HomePage() {
             </motion.p>
           </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "24px" }}>
             {steps.map((step, i) => (
               <motion.div
                 key={i} initial="hidden" whileInView="visible"
@@ -175,7 +175,7 @@ export default function HomePage() {
             </motion.p>
           </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
             {domains.slice(0, 6).map((domain, i) => (
               <motion.div key={domain.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
                 <Link href={`/roadmaps/${domain.slug}`} className="glass-card" style={{ padding: "28px", display: "block", height: "100%" }}>
@@ -210,7 +210,7 @@ export default function HomePage() {
       {/* ─── CAREERBOT TEASER ─────────────── */}
       <section style={{ padding: "120px 24px" }}>
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <div className="glass-card" style={{ padding: "56px 48px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px", alignItems: "center" }}>
+          <div className="glass-card md-two-col" style={{ padding: "clamp(28px, 5vw, 56px) clamp(20px, 4vw, 48px)", display: "grid", gap: "32px", alignItems: "center" }}>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <motion.span variants={fadeUp} custom={0}
                 className="text-emerald-400"
