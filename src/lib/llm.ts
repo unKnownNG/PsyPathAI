@@ -56,6 +56,7 @@ export async function streamChatCompletion(
   return new ReadableStream({
     async start(controller) {
       const encoder = new TextEncoder();
+      let buffer = ""; // Buffer for incomplete lines across chunks
 
       while (true) {
         const { done, value } = await reader.read();
@@ -64,12 +65,19 @@ export async function streamChatCompletion(
           break;
         }
 
-        const text = decoder.decode(value, { stream: true });
-        const lines = text.split("\n");
+        // Append new data to buffer, then split into complete lines
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+
+        // The last element may be an incomplete line — keep it in the buffer
+        buffer = lines.pop() ?? "";
 
         for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            const data = line.slice(6).trim();
+          const trimmed = line.trim();
+          if (!trimmed) continue;
+
+          if (trimmed.startsWith("data: ")) {
+            const data = trimmed.slice(6).trim();
             if (data === "[DONE]") {
               controller.close();
               return;
@@ -82,7 +90,7 @@ export async function streamChatCompletion(
                 controller.enqueue(encoder.encode(content));
               }
             } catch {
-              // Skip malformed JSON chunks
+              // Genuinely malformed JSON (not a split issue since we buffer)
             }
           }
         }

@@ -6,6 +6,10 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ChevronRight, MessageCircle, Construction } from "lucide-react";
 import { getDomainBySlug, getSubPathBySlug } from "@/data/roadmaps";
 import DynamicIcon from "@/components/DynamicIcon";
+import RoadmapFlow from "@/components/RoadmapFlow";
+
+const hasRoadmapData = (phases: { topics: unknown[] }[]) =>
+  phases.length > 0 && phases.some((p) => p.topics.length > 0);
 
 export default function SubPathPage({ params }: { params: Promise<{ domain: string; subpath: string }> }) {
   const { domain: domainSlug, subpath: subpathSlug } = use(params);
@@ -16,10 +20,10 @@ export default function SubPathPage({ params }: { params: Promise<{ domain: stri
   const relatedPaths = domain.subPaths.filter((sp) => sp.id !== subpath.id).slice(0, 3);
 
   return (
-    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "64px 32px" }}>
+    <div style={{ maxWidth: hasRoadmapData(subpath.phases) ? "1100px" : "960px", margin: "0 auto", padding: "64px 32px" }}>
       {/* Breadcrumb */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginBottom: "40px" }}>
-        <div className="text-muted" style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.9rem" }}>
+        <div className="text-muted" style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.9rem", flexWrap: "wrap" }}>
           <Link href="/roadmaps" className="text-muted" style={{ textDecoration: "none" }}>Roadmaps</Link>
           <ChevronRight style={{ width: "12px", height: "12px" }} />
           <Link href={`/roadmaps/${domainSlug}`} className="text-muted" style={{ textDecoration: "none" }}>{domain.name}</Link>
@@ -40,26 +44,35 @@ export default function SubPathPage({ params }: { params: Promise<{ domain: stri
           </div>
         </div>
         <p className="text-muted" style={{ fontSize: "1.05rem", maxWidth: "600px", lineHeight: 1.7 }}>{subpath.description}</p>
-      </motion.div>
 
-      {/* Placeholder */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-        className="glass-card" style={{ padding: "64px 48px", textAlign: "center", marginBottom: "48px" }}>
-        <div style={{ width: "80px", height: "80px", borderRadius: "24px", background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 28px" }}>
-          <Construction className="text-indigo-400" style={{ width: "40px", height: "40px" }} />
-        </div>
-        <h2 className="font-bold font-heading" style={{ fontSize: "1.75rem", marginBottom: "16px" }}>
-          Roadmap <span className="gradient-text">Coming Soon</span>
-        </h2>
-        <p className="text-muted" style={{ maxWidth: "440px", margin: "0 auto 32px", lineHeight: 1.7, fontSize: "1rem" }}>
-          We&apos;re building a detailed, step-by-step roadmap for {subpath.name}. Check back soon for curated phases, topics, and resources.
-        </p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center" }}>
+        {/* Tags */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "20px" }}>
           {subpath.tags.map((tag) => (
-            <span key={tag} className="text-muted" style={{ padding: "6px 14px", borderRadius: "8px", background: "rgba(17,24,39,0.8)", fontSize: "0.8rem", border: "1px solid rgba(148,163,184,0.1)" }}>{tag}</span>
+            <span key={tag} className="text-muted" style={{ padding: "5px 12px", borderRadius: "8px", background: "rgba(17,24,39,0.8)", fontSize: "0.75rem", border: "1px solid rgba(148,163,184,0.1)" }}>{tag}</span>
           ))}
         </div>
       </motion.div>
+
+      {/* Roadmap or Coming Soon */}
+      {hasRoadmapData(subpath.phases) ? (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}
+          style={{ marginBottom: "48px" }}>
+          <RoadmapFlow phases={subpath.phases} accentColor={domain.color} />
+        </motion.div>
+      ) : (
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+          className="glass-card" style={{ padding: "64px 48px", textAlign: "center", marginBottom: "48px" }}>
+          <div style={{ width: "80px", height: "80px", borderRadius: "24px", background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 28px" }}>
+            <Construction className="text-indigo-400" style={{ width: "40px", height: "40px" }} />
+          </div>
+          <h2 className="font-bold font-heading" style={{ fontSize: "1.75rem", marginBottom: "16px" }}>
+            Roadmap <span className="gradient-text">Coming Soon</span>
+          </h2>
+          <p className="text-muted" style={{ maxWidth: "440px", margin: "0 auto 32px", lineHeight: 1.7, fontSize: "1rem" }}>
+            We&apos;re building a detailed, step-by-step roadmap for {subpath.name}. Check back soon for curated phases, topics, and resources.
+          </p>
+        </motion.div>
+      )}
 
       {/* Bottom Grid */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>

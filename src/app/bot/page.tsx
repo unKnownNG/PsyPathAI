@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
 import { Send, Brain, Sparkles, User, Bot, Plus, MessageSquare } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -53,6 +54,7 @@ function TypingIndicator() {
   );
 }
 
+/* ── Markdown-aware message bubble ── */
 function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
   return (
@@ -71,7 +73,13 @@ function MessageBubble({ message }: { message: ChatMessage }) {
             ? { background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.25)", borderBottomRightRadius: "6px" }
             : { background: "#111827", border: "1px solid rgba(148,163,184,0.1)", borderBottomLeftRadius: "6px" })
         }}>
-          <p style={{ whiteSpace: "pre-wrap" }}>{message.content}</p>
+          {isUser ? (
+            <p style={{ whiteSpace: "pre-wrap" }}>{message.content}</p>
+          ) : (
+            <div className="bot-markdown">
+              <ReactMarkdown>{message.content || "..."}</ReactMarkdown>
+            </div>
+          )}
         </div>
         <p style={{ fontSize: "0.65rem", color: "#64748b", marginTop: "6px", padding: "0 4px" }}>{message.timestamp}</p>
       </div>
@@ -87,7 +95,11 @@ export default function BotPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
-  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  // This ref prevents the "load session messages" useEffect from
+  // overwriting in-flight streaming messages when a NEW session is created.
+  const isNewSessionRef = useRef(false);
+
   const supabase = createClient();
 
   // Check auth and load profile
@@ -96,8 +108,8 @@ export default function BotPage() {
       const { data: { user } } = await supabase.auth.getUser();
       setIsAuthenticated(!!user);
 
+      let profileLoaded = false;
       if (user) {
-        // Load profile from API
         try {
           const res = await fetch("/api/profile");
           if (res.ok) {
@@ -112,11 +124,11 @@ export default function BotPage() {
                 learningStyle: data.profile.learning_style || "",
                 interests: data.profile.interests || [],
               });
+              profileLoaded = true;
             }
           }
-        } catch { /* fallback to localStorage */ }
+        } catch { /* fallback below */ }
 
-        // Load sessions
         try {
           const res = await fetch("/api/chat/sessions");
           if (res.ok) {
@@ -126,8 +138,7 @@ export default function BotPage() {
         } catch { /* ignore */ }
       }
 
-      // Fallback to localStorage for profile
-      if (!profile) {
+      if (!profileLoaded) {
         const stored = localStorage.getItem("careerforge-profile");
         if (stored) {
           try { setProfile(JSON.parse(stored)); } catch { /* ignore */ }
@@ -135,11 +146,21 @@ export default function BotPage() {
       }
     };
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Load messages for active session
+  // Load messages when user clicks an EXISTING session.
+  // Skips if the session was just created (isNewSessionRef).
   useEffect(() => {
     if (!activeSessionId) return;
+
+    // If we just created this session during handleSend, the messages
+    // are already in state from streaming. Don't overwrite them.
+    if (isNewSessionRef.current) {
+      isNewSessionRef.current = false;
+      return;
+    }
+
     const loadMessages = async () => {
       try {
         const res = await fetch(`/api/chat/messages?sessionId=${activeSessionId}`);
@@ -158,9 +179,7 @@ export default function BotPage() {
     loadMessages();
   }, [activeSessionId]);
 
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping]);
+  // ── NO auto-scroll at all. The user controls their own scroll position. ──
 
   const handleSend = useCallback(async (text?: string) => {
     const msg = text || input.trim();
@@ -177,7 +196,6 @@ export default function BotPage() {
     setIsTyping(true);
 
     if (isAuthenticated) {
-      // Real API call with streaming
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -191,44 +209,61 @@ export default function BotPage() {
         // Get session ID from header
         const newSessionId = res.headers.get("X-Session-Id");
         if (newSessionId && !activeSessionId) {
+          // Mark as new session so the useEffect doesn't overwrite messages
+          isNewSessionRef.current = true;
           setActiveSessionId(newSessionId);
           // Refresh sessions list
-          const sessRes = await fetch("/api/chat/sessions");
-          if (sessRes.ok) {
-            const sessData = await sessRes.json();
-            setSessions(sessData.sessions || []);
-          }
+          try {
+            const sessRes = await fetch("/api/chat/sessions");
+            if (sessRes.ok) {
+              const sessData = await sessRes.json();
+              setSessions(sessData.sessions || []);
+            }
+          } catch { /* ignore */ }
         }
 
-        if (res.headers.get("Content-Type")?.includes("text/plain")) {
-          // Streaming response
-          const reader = res.body?.getReader();
+        const contentType = res.headers.get("Content-Type") || "";
+
+        if (contentType.includes("text/plain") && res.body) {
+          // ── Streaming response ──
+          const reader = res.body.getReader();
           const decoder = new TextDecoder();
-          let botContent = "";
           const botId = `b-${Date.now()}`;
 
-          // Add empty bot message
+          // Add bot message placeholder — keep isTyping true until first chunk
           setMessages((prev) => [...prev, {
             id: botId,
             role: "bot",
             content: "",
             timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           }]);
-          setIsTyping(false);
 
-          if (reader) {
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              botContent += decoder.decode(value, { stream: true });
-              const currentContent = botContent;
-              setMessages((prev) => prev.map((m) =>
-                m.id === botId ? { ...m, content: currentContent } : m
-              ));
+          // Read the stream — accumulate text serially
+          let accumulated = "";
+          let firstChunk = true;
+          // eslint-disable-next-line no-constant-condition
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            accumulated += decoder.decode(value, { stream: true });
+
+            // Hide typing indicator after first chunk arrives
+            if (firstChunk) {
+              setIsTyping(false);
+              firstChunk = false;
             }
+
+            const snapshot = accumulated;
+            setMessages((prev) => prev.map((m) =>
+              m.id === botId ? { ...m, content: snapshot } : m
+            ));
           }
+
+          // If stream ended without any chunks, still clear typing
+          if (firstChunk) setIsTyping(false);
+
         } else {
-          // Non-streaming fallback (JSON response)
+          // ── Non-streaming JSON response ──
           const data = await res.json();
           setMessages((prev) => [...prev, {
             id: `b-${Date.now()}`,
@@ -249,12 +284,11 @@ export default function BotPage() {
         setIsTyping(false);
       }
     } else {
-      // Not authenticated — show a prompt to sign in
       setTimeout(() => {
         setMessages((prev) => [...prev, {
           id: `b-${Date.now()}`,
           role: "bot",
-          content: `Great question! To give you personalized, psychology-aware career advice, I need to know your personality profile.\n\n**Sign in** (top right) and take the quiz first — then I can:\n• Analyze your MBTI type & Holland code\n• Recommend career paths tailored to YOUR personality\n• Create custom milestone plans\n• Frame advice in a way that resonates with how you think\n\nOnce you're signed in, I'll have access to 6 specialized psychology tools to help guide your career! 🚀`,
+          content: "Great question! To give you personalized, psychology-aware career advice, I need to know your personality profile.\n\n**Sign in** (top right) and take the quiz first — then I can:\n- Analyze your MBTI type & Holland code\n- Recommend career paths tailored to YOUR personality\n- Create custom milestone plans\n- Frame advice in a way that resonates with how you think\n\nOnce you're signed in, I'll have access to 6 specialized psychology tools to help guide your career! 🚀",
           timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         }]);
         setIsTyping(false);
@@ -262,7 +296,7 @@ export default function BotPage() {
     }
   }, [input, isTyping, isAuthenticated, activeSessionId]);
 
-  const handleNewChat = async () => {
+  const handleNewChat = () => {
     setMessages([]);
     setActiveSessionId(null);
   };
@@ -285,13 +319,11 @@ export default function BotPage() {
           </div>
         </div>
 
-        {/* New Chat button */}
         <button onClick={handleNewChat}
           style={{ width: "100%", display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "10px", background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", color: "#818cf8", fontSize: "0.85rem", fontWeight: 500, cursor: "pointer", marginBottom: "16px" }}>
           <Plus style={{ width: "14px", height: "14px" }} /> New Chat
         </button>
 
-        {/* Chat sessions */}
         {sessions.length > 0 && (
           <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "4px", marginBottom: "16px" }}>
             <p className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px" }}>Recent Chats</p>
@@ -310,7 +342,6 @@ export default function BotPage() {
           </div>
         )}
 
-        {/* Profile card */}
         {profile && profile.mbtiType ? (
           <div className="glass-card" style={{ padding: "20px", marginTop: "auto" }}>
             <h3 className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "16px" }}>Your Profile</h3>
@@ -337,7 +368,7 @@ export default function BotPage() {
         )}
       </div>
 
-      {/* Chat */}
+      {/* Chat area */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
         <div style={{ flex: 1, overflowY: "auto", padding: "24px 32px", display: "flex", flexDirection: "column", gap: "24px" }}>
           {messages.length === 0 && (
@@ -355,7 +386,6 @@ export default function BotPage() {
             {messages.map((msg) => <MessageBubble key={msg.id} message={msg} />)}
           </AnimatePresence>
           {isTyping && <TypingIndicator />}
-          <div ref={chatEndRef} />
         </div>
 
         {messages.length === 0 && (
