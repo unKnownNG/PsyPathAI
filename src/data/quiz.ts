@@ -1,13 +1,105 @@
 import { QuizQuestion, HollandOption, LearningStyleOption, PersonalityMapping } from "./types";
 
+/**
+ * 12 scenario-based MBTI questions using a 5-point Likert scale.
+ * 
+ * Design principles (anti-bias):
+ * 1. Questions describe BEHAVIORS in concrete scenarios, not self-labels.
+ * 2. Neither "Agree" nor "Disagree" sounds socially superior.
+ * 3. Some questions are reverse-coded (direction = second letter) to catch
+ *    acquiescence bias (people who tend to always agree).
+ * 4. Scenarios are relatable to engineering students specifically.
+ */
 export const mbtiQuestions: QuizQuestion[] = [
-  { id: "q1", question: "When working on a group project, you prefer to...", optionA: { text: "Lead the discussion and brainstorm ideas out loud with the team", value: "E" }, optionB: { text: "Research independently and share your findings when ready", value: "I" } },
-  { id: "q2", question: "When learning a new programming concept, you find it easier to...", optionA: { text: "Understand the big picture and theoretical framework first", value: "N" }, optionB: { text: "Start with concrete examples and hands-on practice", value: "S" } },
-  { id: "q3", question: "When choosing between two tech stacks for a project, you decide based on...", optionA: { text: "Logical analysis of performance, scalability, and community support", value: "T" }, optionB: { text: "Which one the team is more excited about and would enjoy using", value: "F" } },
-  { id: "q4", question: "Your ideal project timeline looks like...", optionA: { text: "A detailed plan with milestones, deadlines, and clear deliverables", value: "J" }, optionB: { text: "A flexible roadmap that allows for pivoting and exploration", value: "P" } },
-  { id: "q5", question: "At a tech conference or hackathon, you typically...", optionA: { text: "Network actively and attend various sessions and workshops", value: "E" }, optionB: { text: "Focus deeply on one track and connect with a few people meaningfully", value: "I" } },
-  { id: "q6", question: "When debugging a complex issue, your first instinct is to...", optionA: { text: "Follow your intuition and look for patterns in the behavior", value: "N" }, optionB: { text: "Systematically check logs, add breakpoints, and trace the execution", value: "S" } },
+  // ─── E / I  (3 questions) ───────────────────────────────────────
+  {
+    id: "q1",
+    question: "After a long day of classes, you find yourself wanting to hang out with friends or attend a campus event rather than heading home.",
+    dimension: "EI",
+    direction: "E",
+  },
+  {
+    id: "q2",
+    question: "When you're stuck on a tough assignment, your first instinct is to work through it alone before asking anyone for help.",
+    dimension: "EI",
+    direction: "I", // Agree → Introversion (reverse-coded)
+  },
+  {
+    id: "q3",
+    question: "In group discussions, you tend to speak up early and think through ideas by talking them out rather than reflecting silently first.",
+    dimension: "EI",
+    direction: "E",
+  },
+
+  // ─── S / N  (3 questions) ───────────────────────────────────────
+  {
+    id: "q4",
+    question: "When starting a new project, you prefer to dive into a working prototype immediately rather than mapping out an overall design first.",
+    dimension: "SN",
+    direction: "S",
+  },
+  {
+    id: "q5",
+    question: "You often catch yourself thinking about how current technology trends might change the world five or ten years from now.",
+    dimension: "SN",
+    direction: "N",
+  },
+  {
+    id: "q6",
+    question: "You tend to trust tried-and-tested solutions over experimental approaches, even if the new approach might be more elegant.",
+    dimension: "SN",
+    direction: "S",
+  },
+
+  // ─── T / F  (3 questions) ───────────────────────────────────────
+  {
+    id: "q7",
+    question: "When two teammates disagree on an approach, you focus on which argument is logically stronger rather than how each person feels about it.",
+    dimension: "TF",
+    direction: "T",
+  },
+  {
+    id: "q8",
+    question: "You find it hard to give critical feedback to a peer if you think it might hurt their feelings, even when the feedback is objectively necessary.",
+    dimension: "TF",
+    direction: "F", // Agree → Feeling
+  },
+  {
+    id: "q9",
+    question: "When choosing a tech stack for a team project, you lean toward whichever option the team members seem most excited and motivated about.",
+    dimension: "TF",
+    direction: "F",
+  },
+
+  // ─── J / P  (3 questions) ───────────────────────────────────────
+  {
+    id: "q10",
+    question: "You usually create a detailed plan or schedule before starting any multi-day task, and feel uneasy without one.",
+    dimension: "JP",
+    direction: "J",
+  },
+  {
+    id: "q11",
+    question: "You'd rather keep your options open and explore different technologies than commit to one stack early on in a project.",
+    dimension: "JP",
+    direction: "P", // Agree → Perceiving
+  },
+  {
+    id: "q12",
+    question: "You prefer to finish one task completely before starting the next, rather than juggling several tasks at once.",
+    dimension: "JP",
+    direction: "J",
+  },
 ];
+
+/** The 5-point Likert scale options */
+export const likertOptions = [
+  { label: "Strongly Disagree", value: 1 },
+  { label: "Disagree", value: 2 },
+  { label: "Neutral", value: 3 },
+  { label: "Agree", value: 4 },
+  { label: "Strongly Agree", value: 5 },
+] as const;
 
 export const hollandOptions: HollandOption[] = [
   { id: "h1", label: "Builder", description: "I enjoy working with tools, machines, or physical materials", code: "R", icon: "Wrench" },
@@ -38,19 +130,49 @@ export const personalityMappings: PersonalityMapping[] = [
   { mbtiType: "ISFJ", hollandCodes: ["S", "C"], recommendedPaths: ["frontend", "application-security", "data-science"], description: "The Defender — Your dedication to quality and helping others makes you great at secure, user-friendly applications." },
   { mbtiType: "ESTJ", hollandCodes: ["E", "C"], recommendedPaths: ["devops", "cloud-computing", "system-design"], description: "The Executive — Your organizational skills and decisiveness make you a natural DevOps engineer and cloud architect." },
   { mbtiType: "ESFJ", hollandCodes: ["S", "E"], recommendedPaths: ["frontend", "cross-platform", "open-source"], description: "The Consul — Your sociability and desire to help make you great at building applications that serve communities." },
-  { mbtiType: "ISTP", hollandCodes: ["R", "I"], recommendedPaths: ["ethical-hacking", "iot", "docker-kubernetes"], description: "The Virtuoso — Your hands-on problem-solving makes you a natural hacker, tinkerer, and systems engineer." },
+  { mbtiType: "ISTP", hollandCodes: ["R", "I"], recommendedPaths: ["ethical-hacking", "embedded-systems", "docker-kubernetes"], description: "The Virtuoso — Your hands-on problem-solving makes you a natural hacker, tinkerer, and systems engineer." },
   { mbtiType: "ISFP", hollandCodes: ["A", "R"], recommendedPaths: ["frontend", "game-development", "android"], description: "The Adventurer — Your aesthetic sense and practical skills make you great at crafting beautiful apps and games." },
   { mbtiType: "ESTP", hollandCodes: ["R", "E"], recommendedPaths: ["fullstack", "ethical-hacking", "freelancing"], description: "The Entrepreneur — Your boldness and practical thinking make you excel at rapid prototyping and security testing." },
   { mbtiType: "ESFP", hollandCodes: ["A", "S"], recommendedPaths: ["frontend", "cross-platform", "game-development"], description: "The Entertainer — Your energy and creativity drive you toward engaging user experiences and interactive applications." },
 ];
 
-export function computeMBTI(answers: Record<string, string>): string {
-  const counts: Record<string, number> = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-  Object.values(answers).forEach((v) => { counts[v] = (counts[v] || 0) + 1; });
-  const ei = counts["E"] >= counts["I"] ? "E" : "I";
-  const sn = counts["S"] >= counts["N"] ? "S" : "N";
-  const tf = counts["T"] >= counts["F"] ? "T" : "F";
-  const jp = counts["J"] >= counts["P"] ? "J" : "P";
+/**
+ * Compute MBTI type from Likert-scale answers.
+ * 
+ * Each answer is a value 1-5 (Strongly Disagree to Strongly Agree).
+ * We convert to a signed score: 1→-2, 2→-1, 3→0, 4→+1, 5→+2.
+ * If the question's `direction` matches the FIRST letter of the dimension (E, S, T, J),
+ * a positive score counts toward that letter. If `direction` matches the SECOND letter
+ * (I, N, F, P), we flip the sign so Agree counts toward the second letter.
+ * 
+ * Sum per dimension → positive = first letter, negative = second letter, 0 = first.
+ */
+export function computeMBTI(answers: Record<string, number>): string {
+  const dimensions: Record<string, number> = { EI: 0, SN: 0, TF: 0, JP: 0 };
+  const firstLetter: Record<string, string> = { EI: "E", SN: "S", TF: "T", JP: "J" };
+  const secondLetter: Record<string, string> = { EI: "I", SN: "N", TF: "F", JP: "P" };
+
+  for (const q of mbtiQuestions) {
+    const raw = answers[q.id];
+    if (raw === undefined) continue;
+
+    // Convert 1-5 to -2 to +2
+    const signed = raw - 3;
+
+    // If the question's direction matches the first letter (E, S, T, J),
+    // positive signed means "toward first letter". If direction matches second
+    // letter (I, N, F, P), flip so agree → second letter.
+    if (q.direction === firstLetter[q.dimension]) {
+      dimensions[q.dimension] += signed;
+    } else {
+      dimensions[q.dimension] -= signed;
+    }
+  }
+
+  const ei = dimensions.EI >= 0 ? "E" : "I";
+  const sn = dimensions.SN >= 0 ? "S" : "N";
+  const tf = dimensions.TF >= 0 ? "T" : "F";
+  const jp = dimensions.JP >= 0 ? "J" : "P";
   return `${ei}${sn}${tf}${jp}`;
 }
 

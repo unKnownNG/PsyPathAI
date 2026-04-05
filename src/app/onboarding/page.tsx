@@ -5,7 +5,7 @@ import {
   ArrowLeft, ArrowRight, User, Brain, Briefcase, BookOpen, Heart,
   Sparkles, CheckCircle2, ChevronRight,
 } from "lucide-react";
-import { mbtiQuestions, hollandOptions, learningStyleOptions, computeMBTI, getPersonalityMapping } from "@/data/quiz";
+import { mbtiQuestions, likertOptions, hollandOptions, learningStyleOptions, computeMBTI, getPersonalityMapping } from "@/data/quiz";
 import DynamicIcon from "@/components/DynamicIcon";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -41,13 +41,30 @@ const steps = [
   { title: "Interests", icon: Heart },
 ];
 
+/** All 16 MBTI types with short nicknames for the manual selector */
+const mbtiTypes = [
+  { code: "INTJ", nick: "The Architect" }, { code: "INTP", nick: "The Logician" },
+  { code: "ENTJ", nick: "The Commander" }, { code: "ENTP", nick: "The Debater" },
+  { code: "INFJ", nick: "The Advocate" }, { code: "INFP", nick: "The Mediator" },
+  { code: "ENFJ", nick: "The Protagonist" }, { code: "ENFP", nick: "The Campaigner" },
+  { code: "ISTJ", nick: "The Logistician" }, { code: "ISFJ", nick: "The Defender" },
+  { code: "ESTJ", nick: "The Executive" }, { code: "ESFJ", nick: "The Consul" },
+  { code: "ISTP", nick: "The Virtuoso" }, { code: "ISFP", nick: "The Adventurer" },
+  { code: "ESTP", nick: "The Entrepreneur" }, { code: "ESFP", nick: "The Entertainer" },
+];
+
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [year, setYear] = useState("");
   const [goal, setGoal] = useState("");
   const [hours, setHours] = useState("");
-  const [mbtiAnswers, setMbtiAnswers] = useState<Record<string, string>>({});
+
+  // Personality step state
+  const [personalityPath, setPersonalityPath] = useState<"quiz" | "manual" | null>(null);
+  const [mbtiAnswers, setMbtiAnswers] = useState<Record<string, number>>({});
+  const [manualMbti, setManualMbti] = useState("");
+
   const [selectedHolland, setSelectedHolland] = useState<string[]>([]);
   const [learningStyle, setLearningStyle] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
@@ -67,7 +84,10 @@ export default function OnboardingPage() {
   const canProceed = () => {
     switch (currentStep) {
       case 0: return year && goal && hours;
-      case 1: return Object.keys(mbtiAnswers).length >= mbtiQuestions.length;
+      case 1:
+        if (personalityPath === "manual") return manualMbti.length === 4;
+        if (personalityPath === "quiz") return Object.keys(mbtiAnswers).length >= mbtiQuestions.length;
+        return false; // No path selected yet
       case 2: return selectedHolland.length >= 2;
       case 3: return learningStyle !== "";
       case 4: return selectedInterests.length >= 2;
@@ -81,8 +101,13 @@ export default function OnboardingPage() {
     );
   };
 
+  const getFinalMbti = () => {
+    if (personalityPath === "manual") return manualMbti;
+    return computeMBTI(mbtiAnswers);
+  };
+
   const handleFinish = async () => {
-    const mbti = computeMBTI(mbtiAnswers);
+    const mbti = getFinalMbti();
     const hollandCode = selectedHolland.slice(0, 3).join("");
     const personality = getPersonalityMapping(mbti);
 
@@ -128,7 +153,7 @@ export default function OnboardingPage() {
     setShowResults(true);
   };
 
-  const mbtiType = computeMBTI(mbtiAnswers);
+  const mbtiType = getFinalMbti();
   const personality = getPersonalityMapping(mbtiType);
 
   const btnBase = { padding: "14px 20px", borderRadius: "12px", fontSize: "0.88rem", fontWeight: 500, cursor: "pointer", transition: "all 0.2s", border: "none", textAlign: "left" as const, width: "100%" };
@@ -258,20 +283,107 @@ export default function OnboardingPage() {
           {currentStep === 1 && (
             <div>
               <h2 className="font-bold font-heading" style={{ fontSize: "1.5rem", marginBottom: "12px" }}>Personality Assessment</h2>
-              <p className="text-muted" style={{ marginBottom: "40px" }}>Choose the option that feels most natural to you.</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                {mbtiQuestions.map((q, qi) => (
-                  <div key={q.id} className="glass-card" style={{ padding: "24px" }}>
-                    <p style={{ fontWeight: 500, fontSize: "0.9rem", marginBottom: "16px" }}>{qi + 1}. {q.question}</p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                      {[q.optionA, q.optionB].map((opt) => (
-                        <button key={opt.value} onClick={() => setMbtiAnswers((prev) => ({ ...prev, [q.id]: opt.value }))}
-                          style={mbtiAnswers[q.id] === opt.value ? btnActive : btnInactive}>{opt.text}</button>
-                      ))}
-                    </div>
+              <p className="text-muted" style={{ marginBottom: "32px" }}>
+                {!personalityPath
+                  ? "Do you already know your MBTI personality type?"
+                  : personalityPath === "manual"
+                    ? "Select your known MBTI type below."
+                    : "Rate how accurately each scenario describes your typical behavior."}
+              </p>
+
+              {/* Path Gate */}
+              {!personalityPath && (
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                  <button
+                    onClick={() => setPersonalityPath("manual")}
+                    className="glass-card"
+                    style={{ padding: "32px 24px", textAlign: "center", cursor: "pointer", transition: "all 0.2s" }}>
+                    <div style={{ fontSize: "2.5rem", marginBottom: "16px" }}>🧠</div>
+                    <p className="font-bold font-heading" style={{ fontSize: "0.95rem", marginBottom: "8px" }}>I Know My Type</p>
+                    <p style={{ fontSize: "0.78rem", color: "#94a3b8", lineHeight: 1.6 }}>Enter your 4-letter MBTI code directly</p>
+                  </button>
+                  <button
+                    onClick={() => setPersonalityPath("quiz")}
+                    className="glass-card"
+                    style={{ padding: "32px 24px", textAlign: "center", cursor: "pointer", transition: "all 0.2s" }}>
+                    <div style={{ fontSize: "2.5rem", marginBottom: "16px" }}>📝</div>
+                    <p className="font-bold font-heading" style={{ fontSize: "0.95rem", marginBottom: "8px" }}>Take the Quiz</p>
+                    <p style={{ fontSize: "0.78rem", color: "#94a3b8", lineHeight: 1.6 }}>12 quick scenarios to discover your type</p>
+                  </button>
+                </div>
+              )}
+
+              {/* Manual MBTI Selector */}
+              {personalityPath === "manual" && (
+                <div>
+                  <button onClick={() => setPersonalityPath(null)} style={{ background: "none", border: "none", color: "#818cf8", fontSize: "0.8rem", cursor: "pointer", marginBottom: "20px", padding: 0 }}>
+                    ← Choose a different option
+                  </button>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "10px" }}>
+                    {mbtiTypes.map((t) => {
+                      const sel = manualMbti === t.code;
+                      return (
+                        <button key={t.code} onClick={() => setManualMbti(t.code)}
+                          style={{
+                            ...btnBase,
+                            display: "flex", alignItems: "center", gap: "12px",
+                            ...(sel
+                              ? { background: "rgba(99,102,241,0.15)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)" }
+                              : { background: "#111827", color: "#cbd5e1", border: "1px solid rgba(148,163,184,0.12)" }),
+                          }}>
+                          <span className="font-mono" style={{ fontWeight: 700, fontSize: "1rem", minWidth: "48px" }}>{t.code}</span>
+                          <span style={{ fontSize: "0.8rem", color: sel ? "#a5b4fc" : "#94a3b8" }}>{t.nick}</span>
+                        </button>
+                      );
+                    })}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
+
+              {/* Likert Quiz */}
+              {personalityPath === "quiz" && (
+                <div>
+                  <button onClick={() => setPersonalityPath(null)} style={{ background: "none", border: "none", color: "#818cf8", fontSize: "0.8rem", cursor: "pointer", marginBottom: "20px", padding: 0 }}>
+                    ← Choose a different option
+                  </button>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                    {mbtiQuestions.map((q, qi) => (
+                      <div key={q.id} className="glass-card" style={{ padding: "24px" }}>
+                        <p style={{ fontWeight: 500, fontSize: "0.9rem", marginBottom: "16px", lineHeight: 1.6 }}>
+                          {qi + 1}. {q.question}
+                        </p>
+                        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                          {likertOptions.map((opt) => {
+                            const sel = mbtiAnswers[q.id] === opt.value;
+                            return (
+                              <button
+                                key={opt.value}
+                                onClick={() => setMbtiAnswers((prev) => ({ ...prev, [q.id]: opt.value }))}
+                                style={{
+                                  flex: "1 1 0",
+                                  minWidth: "0",
+                                  padding: "10px 4px",
+                                  borderRadius: "10px",
+                                  fontSize: "0.68rem",
+                                  fontWeight: sel ? 600 : 400,
+                                  cursor: "pointer",
+                                  transition: "all 0.15s",
+                                  border: sel ? "1px solid rgba(99,102,241,0.35)" : "1px solid rgba(148,163,184,0.12)",
+                                  background: sel ? "rgba(99,102,241,0.15)" : "#111827",
+                                  color: sel ? "#818cf8" : "#94a3b8",
+                                  textAlign: "center",
+                                  lineHeight: 1.3,
+                                }}>
+                                {opt.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

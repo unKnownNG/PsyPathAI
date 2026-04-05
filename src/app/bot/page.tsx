@@ -2,8 +2,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { Send, Brain, Sparkles, User, Bot, Plus, MessageSquare } from "lucide-react";
+import { Send, Brain, Sparkles, User, Bot, Plus, MessageSquare, AlertTriangle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 
 interface ChatMessage {
   id: string;
@@ -370,6 +371,19 @@ export default function BotPage() {
 
       {/* Chat area */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+        {/* Inline quiz nudge banner for authenticated users without profile */}
+        {isAuthenticated && (!profile || !profile.mbtiType) && (
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px clamp(12px, 3vw, 32px)", background: "rgba(251,191,36,0.08)", borderBottom: "1px solid rgba(251,191,36,0.15)" }}>
+            <AlertTriangle style={{ width: "18px", height: "18px", color: "#fbbf24", flexShrink: 0 }} />
+            <p style={{ fontSize: "0.82rem", color: "#fde68a", flex: 1, lineHeight: 1.5 }}>
+              Take the personality quiz for <strong>much more personalized</strong> career advice!
+            </p>
+            <Link href="/onboarding" style={{ padding: "6px 14px", borderRadius: "8px", background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.25)", color: "#fbbf24", fontSize: "0.78rem", fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
+              Take Quiz →
+            </Link>
+          </div>
+        )}
+
         <div style={{ flex: 1, overflowY: "auto", padding: "24px clamp(12px, 3vw, 32px)", display: "flex", flexDirection: "column", gap: "24px" }}>
           {messages.length === 0 && (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "24px", opacity: 0.8 }}>

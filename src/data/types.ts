@@ -48,9 +48,16 @@ export interface Domain {
 
 export interface QuizQuestion {
   id: string;
+  /** The scenario-based question text (behavioral, not self-descriptive) */
   question: string;
-  optionA: { text: string; value: string };
-  optionB: { text: string; value: string };
+  /** Which MBTI dimension this question measures */
+  dimension: "EI" | "SN" | "TF" | "JP";
+  /** 
+   * Which pole a HIGH score (Strongly Agree) maps to.
+   * e.g. direction "E" means Agree → Extraversion, Disagree → Introversion.
+   * Used for reverse-coded questions too (direction "I" flips the scoring).
+   */
+  direction: string;
 }
 
 export interface HollandOption {

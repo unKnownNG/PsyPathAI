@@ -80,14 +80,16 @@ export default function RoadmapFlow({ phases, accentColor }: Props) {
               position: "relative",
             }}
           >
-            {/* Big dot on spine for phase */}
-            <div style={{
-              position: "absolute", left: spineX, top: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "22px", height: "22px", borderRadius: "50%",
-              background: accentColor, border: "4px solid #0a0f1a",
-              boxShadow: `0 0 18px ${accentColor}50`, zIndex: 3,
-            }} />
+            {/* Big dot on spine for phase (MOBILE ONLY) */}
+            {isMobile && (
+              <div style={{
+                position: "absolute", left: spineX, top: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "22px", height: "22px", borderRadius: "50%",
+                background: accentColor, border: "4px solid #0a0f1a",
+                boxShadow: `0 0 18px ${accentColor}50`, zIndex: 3,
+              }} />
+            )}
 
             {/* Mobile connector from spine to badge */}
             {isMobile && (
@@ -103,6 +105,7 @@ export default function RoadmapFlow({ phases, accentColor }: Props) {
               padding: "14px 28px", borderRadius: "14px",
               background: `${accentColor}12`, border: `1px solid ${accentColor}25`,
               textAlign: isMobile ? "left" : "center", zIndex: 4,
+              position: "relative",
             }}>
               <p style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "4px", fontWeight: 600 }}>
                 Phase {phaseIdx + 1}
@@ -277,15 +280,18 @@ export default function RoadmapFlow({ phases, accentColor }: Props) {
           position: "relative",
         }}
       >
-        <div style={{
-          position: "absolute", left: spineX, top: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "28px", height: "28px", borderRadius: "50%",
-          background: `linear-gradient(135deg, ${accentColor}, #34d399)`,
-          border: "4px solid #0a0f1a",
-          boxShadow: `0 0 24px ${accentColor}40`,
-          zIndex: 3,
-        }} />
+        {/* Path Complete dot (MOBILE ONLY) */}
+        {isMobile && (
+          <div style={{
+            position: "absolute", left: spineX, top: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "28px", height: "28px", borderRadius: "50%",
+            background: `linear-gradient(135deg, ${accentColor}, #34d399)`,
+            border: "4px solid #0a0f1a",
+            boxShadow: `0 0 24px ${accentColor}40`,
+            zIndex: 3,
+          }} />
+        )}
         {isMobile && (
           <div style={{
             position: "absolute", left: "42px", top: "50%",
@@ -297,6 +303,7 @@ export default function RoadmapFlow({ phases, accentColor }: Props) {
           padding: "14px 24px", borderRadius: "14px",
           background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)",
           display: "flex", alignItems: "center", gap: "10px", zIndex: 2,
+          position: "relative",
         }}>
           <Trophy style={{ width: "18px", height: "18px", color: "#34d399" }} />
           <span className="font-bold" style={{ fontSize: "0.9rem", color: "#34d399" }}>Path Complete!</span>

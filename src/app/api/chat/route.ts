@@ -20,12 +20,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 });
     }
 
-    // ── 1. Get or create session ────────────────────────────
+    // ── 1. Fetch user profile ───────────────────────────────
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+    // ── 2. Get or create session ────────────────────────────
     let activeSessionId = sessionId;
     if (!activeSessionId) {
+      const userName = profile?.display_name || user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
       const { data: session, error: sessionError } = await supabase
         .from("chat_sessions")
-        .insert({ user_id: user.id, title: message.slice(0, 60) })
+        .insert({
+          user_id: user.id,
+          title: message.slice(0, 60),
+          name: userName,
+        })
         .select("id")
         .single();
 
@@ -35,19 +47,12 @@ export async function POST(request: Request) {
       activeSessionId = session.id;
     }
 
-    // ── 2. Save user message ────────────────────────────────
+    // ── 3. Save user message ────────────────────────────────
     await supabase.from("chat_messages").insert({
       session_id: activeSessionId,
       role: "user",
       content: message,
     });
-
-    // ── 3. Fetch user profile ───────────────────────────────
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
 
     // ── 4. Call MCP tools for psychological context ─────────
     let mcpContext: {
@@ -112,9 +117,21 @@ export async function POST(request: Request) {
 
     // Add profile context as a system note
     if (profile) {
+      if (profile.mbti_type && profile.holland_code) {
+        llmMessages.push({
+          role: "system",
+          content: `Student info: MBTI=${profile.mbti_type}, Holland=${profile.holland_code}, Year=${profile.year || "unknown"}, Goal="${profile.goal || "unknown"}", Hours/week=${profile.hours_per_week || "unknown"}, Learning style=${profile.learning_style || "unknown"}, Interests=${(profile.interests || []).join(", ") || "none specified"}. The student HAS completed the personality quiz.`,
+        });
+      } else {
+        llmMessages.push({
+          role: "system",
+          content: `The student has NOT completed the personality quiz yet. Their profile data is incomplete (no MBTI type or Holland code). Do NOT claim they have taken the quiz. Gently suggest they take the quiz at /onboarding for more personalized advice, but still answer their question helpfully.`,
+        });
+      }
+    } else {
       llmMessages.push({
         role: "system",
-        content: `Student info: Year=${profile.year || "unknown"}, Goal="${profile.goal || "unknown"}", Hours/week=${profile.hours_per_week || "unknown"}, Learning style=${profile.learning_style || "unknown"}, Interests=${(profile.interests || []).join(", ") || "none specified"}.`,
+        content: `No student profile found. The student has NOT taken the personality quiz. Gently recommend they take it at /onboarding for personalized advice, but still help them with their question.`,
       });
     }
 

@@ -60,23 +60,39 @@ export const roadmapData: RoadmapDomain[] = [
       {
         slug: "backend", name: "Backend Development", difficulty: "Intermediate", estimatedTime: "6-9 months", tags: ["Node", "APIs", "Databases", "Auth"],
         phases: [
-          { id: "be-p1", title: "Foundation", description: "Server-side basics", topics: [
-            { id: "be-t1", name: "Node.js & Express", description: "JavaScript on the server", timeEstimate: "3 weeks", difficulty: "Beginner" },
-            { id: "be-t2", name: "Databases (SQL & NoSQL)", description: "Data persistence", timeEstimate: "3 weeks", difficulty: "Intermediate" },
-            { id: "be-t3", name: "Authentication & Authorization", description: "Secure user systems", timeEstimate: "2 weeks", difficulty: "Intermediate" },
+          { id: "be-p1", title: "Internet & OS Fundamentals", description: "How the web and servers work", topics: [
+            { id: "be-t1", name: "How the Internet Works", description: "DNS, HTTP/HTTPS, TCP/IP", timeEstimate: "1 week", difficulty: "Beginner" },
+            { id: "be-t2", name: "OS & General Knowledge", description: "Terminal, Process Management, Threads", timeEstimate: "2 weeks", difficulty: "Beginner" },
+            { id: "be-t3", name: "Version Control Systems", description: "Git, GitHub, CI/CD basics", timeEstimate: "1 week", difficulty: "Beginner" },
           ]},
-          { id: "be-p2", title: "Advanced Backend", description: "Scalable architecture", topics: [
-            { id: "be-t4", name: "API Design & GraphQL", description: "Modern API patterns", timeEstimate: "3 weeks", difficulty: "Intermediate" },
-            { id: "be-t5", name: "Caching & Message Queues", description: "Performance at scale", timeEstimate: "2 weeks", difficulty: "Advanced" },
+          { id: "be-p2", title: "Core Server Development", description: "Building robust APIs", topics: [
+            { id: "be-t4", name: "Backend Language Mastery", description: "JavaScript/TypeScript, Python, or Go", timeEstimate: "4 weeks", difficulty: "Intermediate" },
+            { id: "be-t5", name: "Relational Databases", description: "PostgreSQL, MySQL, Database Design", timeEstimate: "3 weeks", difficulty: "Intermediate" },
+            { id: "be-t6", name: "RESTful APIs & GraphQL", description: "API architectures and standards", timeEstimate: "2 weeks", difficulty: "Intermediate" },
+            { id: "be-t7", name: "Authentication & Security", description: "JWT, OAuth, Cookies, CORS, Hashing", timeEstimate: "2 weeks", difficulty: "Intermediate" },
+          ]},
+          { id: "be-p3", title: "Advanced Architecture", description: "Scaling and modern backend systems", topics: [
+            { id: "be-t8", name: "NoSQL & Caching", description: "MongoDB, Redis, Memcached", timeEstimate: "2 weeks", difficulty: "Advanced" },
+            { id: "be-t9", name: "Message Brokers", description: "RabbitMQ, Kafka, Async processing", timeEstimate: "2 weeks", difficulty: "Advanced" },
+            { id: "be-t10", name: "Docker & Containerization", description: "Containerizing backend apps", timeEstimate: "2 weeks", difficulty: "Advanced" },
           ]},
         ],
       },
       {
         slug: "fullstack", name: "Full Stack Development", difficulty: "Advanced", estimatedTime: "10-14 months", tags: ["React", "Node", "Full Stack", "Deployment"],
         phases: [
-          { id: "fs-p1", title: "The Full Picture", description: "End-to-end development", topics: [
-            { id: "fs-t1", name: "Full Stack Architecture", description: "Connecting all pieces", timeEstimate: "3 weeks", difficulty: "Intermediate" },
-            { id: "fs-t2", name: "DevOps for Full Stack", description: "Deployment & CI/CD", timeEstimate: "2 weeks", difficulty: "Advanced" },
+          { id: "fs-p1", title: "Frontend & UI Synergy", description: "Mastering the user interface", topics: [
+            { id: "fs-t1", name: "Advanced React & State", description: "Redux, Zustand, Context API", timeEstimate: "3 weeks", difficulty: "Intermediate" },
+            { id: "fs-t2", name: "UI Components & Styling", description: "Tailwind, Radix UI, Framer Motion", timeEstimate: "2 weeks", difficulty: "Intermediate" },
+          ]},
+          { id: "fs-p2", title: "Backend Integration", description: "Connecting front & back ends", topics: [
+            { id: "fs-t3", name: "API Consumption", description: "React Query, Axios, fetch", timeEstimate: "2 weeks", difficulty: "Intermediate" },
+            { id: "fs-t4", name: "Next.js / SvelteKit", description: "SSR, SSG, Server Actions", timeEstimate: "4 weeks", difficulty: "Advanced" },
+            { id: "fs-t5", name: "Database ORMs", description: "Prisma, Drizzle, TypeORM", timeEstimate: "2 weeks", difficulty: "Advanced" },
+          ]},
+          { id: "fs-p3", title: "DevOps & Cloud", description: "Shipping fullstack apps", topics: [
+            { id: "fs-t6", name: "Cloud Deployment", description: "Vercel, AWS EC2, DigitalOcean", timeEstimate: "2 weeks", difficulty: "Advanced" },
+            { id: "fs-t7", name: "CI/CD Pipelines", description: "GitHub Actions automation", timeEstimate: "1 week", difficulty: "Advanced" },
           ]},
         ],
       },
