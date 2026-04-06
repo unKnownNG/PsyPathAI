@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, ArrowRight, User, Brain, Briefcase, BookOpen, Heart,
-  Sparkles, CheckCircle2, ChevronRight,
+  Sparkles, CheckCircle2, ChevronRight, LogIn, Loader2,
 } from "lucide-react";
 import { mbtiQuestions, likertOptions, hollandOptions, learningStyleOptions, computeMBTI, getPersonalityMapping } from "@/data/quiz";
 import DynamicIcon from "@/components/DynamicIcon";
@@ -69,6 +69,7 @@ export default function OnboardingPage() {
   const [learningStyle, setLearningStyle] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const supabase = createClient();
@@ -77,6 +78,7 @@ export default function OnboardingPage() {
     const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setIsAuthenticated(!!user);
+      setAuthLoading(false);
     };
     checkAuth();
   }, []);
@@ -159,6 +161,68 @@ export default function OnboardingPage() {
   const btnBase = { padding: "14px 20px", borderRadius: "12px", fontSize: "0.88rem", fontWeight: 500, cursor: "pointer", transition: "all 0.2s", border: "none", textAlign: "left" as const, width: "100%" };
   const btnActive = { ...btnBase, background: "rgba(99,102,241,0.15)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)" };
   const btnInactive = { ...btnBase, background: "#111827", color: "#cbd5e1", border: "1px solid rgba(148,163,184,0.12)" };
+
+  const handleSignIn = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=/onboarding`,
+      },
+    });
+  };
+
+  /* ── Loading ─ */
+  if (authLoading) {
+    return (
+      <div style={{ maxWidth: "640px", margin: "0 auto", padding: "120px 32px", textAlign: "center" }}>
+        <Loader2 style={{ width: "40px", height: "40px", color: "#818cf8", margin: "0 auto", animation: "spin 1s linear infinite" }} />
+      </div>
+    );
+  }
+
+  /* ── Login Gate ─ */
+  if (!isAuthenticated) {
+    return (
+      <div style={{ maxWidth: "540px", margin: "0 auto", padding: "100px 32px" }}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{
+              width: "80px", height: "80px", borderRadius: "24px",
+              background: "linear-gradient(135deg, #6366f1, #34d399)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              margin: "0 auto 28px",
+            }}>
+              <Brain style={{ width: "40px", height: "40px", color: "#fff" }} />
+            </div>
+            <h1 className="font-bold font-heading" style={{ fontSize: "1.75rem", marginBottom: "12px" }}>
+              Sign In to Take the Quiz
+            </h1>
+            <p className="text-muted" style={{ fontSize: "0.95rem", lineHeight: 1.7, marginBottom: "36px", maxWidth: "420px", margin: "0 auto 36px" }}>
+              Your personality results and career recommendations are saved to your account. Sign in so you don&apos;t lose your data!
+            </p>
+
+            <button
+              onClick={handleSignIn}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "10px",
+                padding: "14px 32px", borderRadius: "14px",
+                background: "linear-gradient(135deg, #6366f1, #4f46e5)",
+                color: "#fff", fontSize: "0.95rem", fontWeight: 600,
+                border: "none", cursor: "pointer", transition: "all 0.2s",
+                marginBottom: "20px",
+              }}>
+              <LogIn style={{ width: "18px", height: "18px" }} />
+              Sign in with Google
+            </button>
+
+            <p className="text-muted" style={{ fontSize: "0.75rem" }}>
+              We only access your name and email — nothing else.
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   /* ── Results ─ */
   if (showResults) {

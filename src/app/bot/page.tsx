@@ -78,7 +78,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
             <p style={{ whiteSpace: "pre-wrap" }}>{message.content}</p>
           ) : (
             <div className="bot-markdown">
-              <ReactMarkdown>{message.content || "..."}</ReactMarkdown>
+              <ReactMarkdown>{message.content || "thinking..."}</ReactMarkdown>
             </div>
           )}
         </div>

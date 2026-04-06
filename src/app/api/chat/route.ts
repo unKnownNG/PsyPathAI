@@ -27,10 +27,13 @@ export async function POST(request: Request) {
       .eq("id", user.id)
       .single();
 
+    // Resolve the user's display name once, used for chat_messages.name
+    const userName = profile?.display_name || user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
+    const botName = `${userName}'s Bot`;
+
     // ── 2. Get or create session ────────────────────────────
     let activeSessionId = sessionId;
     if (!activeSessionId) {
-      const userName = profile?.display_name || user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
       const { data: session, error: sessionError } = await supabase
         .from("chat_sessions")
         .insert({
@@ -52,6 +55,7 @@ export async function POST(request: Request) {
       session_id: activeSessionId,
       role: "user",
       content: message,
+      name: userName,
     });
 
     // ── 4. Call MCP tools for psychological context ─────────
@@ -171,6 +175,7 @@ export async function POST(request: Request) {
             session_id: activeSessionId,
             role: "bot",
             content: fullResponse,
+            name: botName,
           });
         }
       };
@@ -196,6 +201,7 @@ export async function POST(request: Request) {
         session_id: activeSessionId,
         role: "bot",
         content: response,
+        name: botName,
       });
 
       return NextResponse.json({
