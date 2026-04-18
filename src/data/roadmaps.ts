@@ -5,6 +5,7 @@ import { aiMLDomain } from "./roadmaps/ai";
 import { dataDomain, cloudDomain } from "./roadmaps/data-cloud";
 import { cyberDomain, coreCsDomain, emergingDomain, careerDomain } from "./roadmaps/other";
 import { hardwareDomain } from "./roadmaps/hardware";
+import { languagesDomain } from "./roadmaps/languages";
 
 export const domains: Domain[] = [
   webDevDomain,
@@ -14,6 +15,7 @@ export const domains: Domain[] = [
   cloudDomain,
   cyberDomain,
   coreCsDomain,
+  languagesDomain,
   hardwareDomain,
   emergingDomain,
   careerDomain
