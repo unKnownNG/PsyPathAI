@@ -23,7 +23,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CareerForge — Personalized Career Roadmaps for Engineers",
+  title: "PsyPathAI — Personalized Career Roadmaps for Engineers",
   description:
     "Discover your ideal engineering career path with personality-driven recommendations, visual roadmaps, and AI-powered guidance.",
 };

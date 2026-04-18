@@ -31,7 +31,7 @@ export default function Navbar() {
               <Flame style={{ width: "20px", height: "20px", color: "#fff" }} />
             </div>
             <span className="font-bold font-heading" style={{ fontSize: "1.25rem", color: "#f1f5f9" }}>
-              Career<span className="gradient-text">Forge</span>
+              PsyPath<span className="gradient-text">AI</span>
             </span>
           </Link>
 

@@ -51,7 +51,7 @@ export default function Footer() {
         </div>
 
         <div style={{ borderTop: "1px solid rgba(148,163,184,0.1)", marginTop: "40px", paddingTop: "28px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-          <p className="text-muted-dark" style={{ fontSize: "0.78rem" }}>© 2025 CareerForge. All rights reserved.</p>
+          <p className="text-muted-dark" style={{ fontSize: "0.78rem" }}>© 2025 PsyPathAI. All rights reserved.</p>
           <p className="text-muted-dark" style={{ fontSize: "0.78rem", display: "flex", alignItems: "center", gap: "4px" }}>
             Made with <Heart style={{ width: "12px", height: "12px", color: "#ef4444", fill: "#ef4444" }} /> for engineering students
           </p>

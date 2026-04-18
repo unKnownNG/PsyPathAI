@@ -8,14 +8,14 @@ import { hardwareDomain } from "./roadmaps/hardware";
 import { languagesDomain } from "./roadmaps/languages";
 
 export const domains: Domain[] = [
+  languagesDomain,
+  coreCsDomain,
   webDevDomain,
   appDevDomain,
   aiMLDomain,
   dataDomain,
   cloudDomain,
   cyberDomain,
-  coreCsDomain,
-  languagesDomain,
   hardwareDomain,
   emergingDomain,
   careerDomain

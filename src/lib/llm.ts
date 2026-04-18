@@ -168,7 +168,7 @@ ${recs.map((r, i) => `${i + 1}. **${r.pathName}** (${r.score}%): ${r.reasoning}`
     }
   }
 
-  return `You are CareerBot, an AI career advisor for engineering college students on the CareerForge platform.
+  return `You are CareerBot, an AI career advisor for engineering college students on the PsyPathAI platform.
 
 ## Your Role
 - Provide personalized, psychology-aware career guidance
