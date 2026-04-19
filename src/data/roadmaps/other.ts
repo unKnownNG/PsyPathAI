@@ -5,146 +5,518 @@ export const cyberDomain: Domain = {
   description: "Learn to protect networks, find vulnerabilities, and secure applications.",
   icon: "Shield", color: "#fca5a5",
   subPaths: [
-    { 
-      id: "ethical-hack", slug: "ethical-hacking", name: "Ethical Hacking", 
-      description: "Learn penetration testing and vulnerability assessment techniques.", 
-      difficulty: "Intermediate", estimatedTime: "5-7 months", icon: "Bug", 
-      tags: ["Kali Linux", "Pentesting", "Nmap"],
+    {
+      id: "ethical-hacking", slug: "ethical-hacking", name: "Ethical Hacking",
+      description: "Think like an attacker. Defend like a pro.",
+      difficulty: "Advanced", estimatedTime: "5-7 months", icon: "Bug",
+      tags: ["Kali Linux", "Pentesting", "Metasploit"],
       phases: [
-        { 
-          id: "eh-p1", title: "Cyber Foundations", description: "The hacker toolkit", 
+        {
+          id: "eh-p1", title: "Foundations", description: "Basics of Linux, Networking, and Recon",
           topics: [
-            { 
-              id: "eh-t1", name: "Linux & Command Line", description: "Mastering the terminal", timeEstimate: "3 weeks", difficulty: "Beginner", 
-              details: "Navigating the Linux filesystem, bash scripting, file permissions, and process management. Familiarization with Kali Linux.", 
+            {
+              id: "eh-p1-t1", name: "Ethical Hacking Intro", description: "Legality, bug bounty", timeEstimate: "1 week", difficulty: "Beginner", details: "What is ethical hacking – scope, legality, bug bounty",
               resources: [
-                { title: "Linux Journey", url: "https://linuxjourney.com/", type: "docs" },
-                { title: "Linux for Hackers", url: "https://www.youtube.com/watch?v=lZAoFs75_cs", type: "video" }
-              ] 
+                { title: "Ethical Hacking Full Course", url: "https://www.youtube.com/watch?v=3Kq1MIfTWCE", type: "video" },
+                { title: "Ethical Hacking Tamil", url: "https://www.youtube.com/results?search_query=ethical+hacking+full+course+tamil", type: "video" }
+              ]
             },
             {
-              id: "eh-t2", name: "Networking Fundamentals", description: "How computers talk", timeEstimate: "3 weeks", difficulty: "Intermediate",
-              details: "TCP/IP suite, OSI Model, subnetting, DNS, HTTP/HTTPS, and Wireshark packet analysis.",
+              id: "eh-p1-t2", name: "Linux for Hackers", description: "File system, bash scripting", timeEstimate: "2 weeks", difficulty: "Beginner", details: "Linux basics for hackers – file system, permissions, bash scripting",
               resources: [
-                { title: "Networking for Ethical Hackers", url: "https://www.freecodecamp.org/news/networking-for-ethical-hackers/", type: "article" },
-                { title: "Wireshark Tutorial", url: "https://www.wireshark.org/docs/wsug_html_chunked/", type: "docs" }
+                { title: "TryHackMe – Beginner Path", url: "https://tryhackme.com/path/outline/beginner", type: "tool" }
               ]
-            }
-          ] 
-        },
-        { 
-          id: "eh-p2", title: "Information Gathering", description: "Recon & Scanning", 
-          topics: [
-            { 
-              id: "eh-t3", name: "Passive Reconnaissance", description: "OSINT techniques", timeEstimate: "2 weeks", difficulty: "Beginner", 
-              details: "Open-source intelligence gathering using tools like Maltego, Shodan, and Google Dorks.", 
-              resources: [
-                { title: "The OSINT Framework", url: "https://osintframework.com/", type: "tool" }
-              ] 
             },
             {
-              id: "eh-t4", name: "Active Scanning", description: "Finding the doors", timeEstimate: "2 weeks", difficulty: "Intermediate",
-              details: "Port scanning with Nmap, vulnerability scanning with Nessus, and basic enumeration.",
+              id: "eh-p1-t3", name: "Networking Fundamentals", description: "TCP/IP, DNS, HTTP", timeEstimate: "2 weeks", difficulty: "Intermediate", details: "Networking fundamentals – TCP/IP, DNS, HTTP, ports, protocols",
               resources: [
-                { title: "Nmap Network Scanning", url: "https://nmap.org/book/toc.html", type: "docs" }
+                { title: "Networking Fundamentals", url: "https://www.youtube.com/results?search_query=Networking+fundamentals+ethical+hacking", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p1-t4", name: "OSI Model", description: "How packets travel", timeEstimate: "1 week", difficulty: "Beginner", details: "OSI model and how packets travel",
+              resources: [
+                { title: "OSI Model", url: "https://www.youtube.com/results?search_query=OSI+model+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p1-t5", name: "Setting up a Lab", description: "VirtualBox, Kali Linux", timeEstimate: "1 week", difficulty: "Beginner", details: "Setting up a lab – VirtualBox, Kali Linux, Metasploitable",
+              resources: [
+                { title: "Kali Linux Setup Guide", url: "https://www.kali.org/docs/installation/", type: "docs" }
+              ]
+            },
+            {
+              id: "eh-p1-t6", name: "Reconnaissance", description: "Passive and active", timeEstimate: "1 week", difficulty: "Intermediate", details: "Reconnaissance – passive (OSINT) and active",
+              resources: [
+                { title: "Reconnaissance Tutorial", url: "https://www.youtube.com/results?search_query=Reconnaissance+tutorial+ethical+hacking", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p1-t7", name: "Google Dorking", description: "Shodan basics", timeEstimate: "1 week", difficulty: "Intermediate", details: "Google Dorking and Shodan basics",
+              resources: [
+                { title: "Google Dorking", url: "https://www.youtube.com/results?search_query=Google+Dorking+Shodan+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p1-t8", name: "Footprinting Tools", description: "whois, nslookup, dig", timeEstimate: "1 week", difficulty: "Intermediate", details: "Footprinting tools – whois, nslookup, dig",
+              resources: [
+                { title: "Footprinting", url: "https://www.youtube.com/results?search_query=Footprinting+tools+whois+nslookup", type: "video" }
               ]
             }
-          ] 
+          ]
         },
         {
-          id: "eh-p3", title: "Exploitation", description: "Gaining access",
+          id: "eh-p2", title: "Exploitation Techniques", description: "Finding logic flaws and penetrating systems",
           topics: [
             {
-              id: "eh-t5", name: "Metasploit Framework", description: "Exploit delivery", timeEstimate: "3 weeks", difficulty: "Advanced",
-              details: "Understanding exploit modules, payloads, reverse shells, and post-exploitation techniques.",
+              id: "eh-p2-t1", name: "Scanning & Enumeration", description: "Nmap, Netcat", timeEstimate: "2 weeks", difficulty: "Intermediate", details: "Scanning and enumeration – Nmap, Netcat",
               resources: [
-                { title: "Metasploit Unleashed", url: "https://www.offensive-security.com/metasploit-unleashed/", type: "course" }
+                { title: "TCM Security Tutorials", url: "https://www.youtube.com/@TCMSecurityAcademy", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p2-t2", name: "Vulnerability Scanning", description: "Nessus, OpenVAS", timeEstimate: "1 week", difficulty: "Intermediate", details: "Vulnerability scanning – Nessus, OpenVAS",
+              resources: [
+                { title: "Vulnerability Scanning", url: "https://www.youtube.com/results?search_query=Vulnerability+scanning+Nessus+OpenVAS", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p2-t3", name: "Metasploit Framework", description: "Payloads, exploits", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Metasploit Framework – modules, payloads, exploits",
+              resources: [
+                { title: "Metasploit Tamil Tutorial", url: "https://www.youtube.com/results?search_query=metasploit+tutorial+tamil+ethical+hacking", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p2-t4", name: "Password Attacks", description: "Brute force, dictionary", timeEstimate: "1 week", difficulty: "Intermediate", details: "Password attacks – brute force, dictionary, rainbow tables",
+              resources: [
+                { title: "Password Attacks", url: "https://www.youtube.com/results?search_query=Password+attacks+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p2-t5", name: "Cracking Hashes", description: "John the Ripper, Hashcat", timeEstimate: "1 week", difficulty: "Intermediate", details: "John the Ripper and Hashcat",
+              resources: [
+                { title: "Hash Cracking", url: "https://www.youtube.com/results?search_query=John+the+Ripper+Hashcat+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p2-t6", name: "Privilege Escalation", description: "Linux and Windows", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Privilege escalation – Linux and Windows techniques",
+              resources: [
+                { title: "TryHackMe – Jr Penetration Tester", url: "https://tryhackme.com/path/outline/jrpenetrationtester", type: "tool" }
+              ]
+            },
+            {
+              id: "eh-p2-t7", name: "Man-in-the-Middle Attacks", description: "ARP spoofing, SSL stripping", timeEstimate: "1 week", difficulty: "Advanced", details: "Man-in-the-Middle attacks – ARP spoofing, SSL stripping",
+              resources: [
+                { title: "MITM Attacks", url: "https://www.youtube.com/results?search_query=MITM+Attacks+ARP+spoofing", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p2-t8", name: "Social Engineering", description: "Phishing concepts", timeEstimate: "1 week", difficulty: "Beginner", details: "Social engineering – phishing concepts",
+              resources: [
+                { title: "Social Engineering", url: "https://www.youtube.com/results?search_query=Social+engineering+phishing+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p2-t9", name: "Post-exploitation", description: "Persistence, lateral movement", timeEstimate: "1 week", difficulty: "Advanced", details: "Post-exploitation – persistence, lateral movement basics",
+              resources: [
+                { title: "HackTheBox – Practice Labs", url: "https://www.hackthebox.com/", type: "tool" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "eh-p3", title: "Advanced & CTF", description: "Complex exploits, bug bounty, and certifications",
+          topics: [
+            {
+              id: "eh-p3-t1", name: "Buffer Overflows", description: "Memory exploitation", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Buffer overflow exploits",
+              resources: [
+                { title: "Buffer Overflow – TCM Security", url: "https://www.youtube.com/watch?v=qSnPayW6vmY", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p3-t2", name: "Shellcoding Basics", description: "Custom payloads", timeEstimate: "1 week", difficulty: "Advanced", details: "Shellcoding basics",
+              resources: [
+                { title: "Shellcoding", url: "https://www.youtube.com/results?search_query=Shellcoding+tutorial+ethical+hacking", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p3-t3", name: "Active Directory Attacks", description: "Kerberoasting, Pass-the-Hash", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Active Directory attacks – Kerberoasting, Pass-the-Hash",
+              resources: [
+                { title: "AD Attacks", url: "https://www.youtube.com/results?search_query=Active+Directory+attacks+Kerberoasting", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p3-t4", name: "Wireless Hacking", description: "WPA2 cracking", timeEstimate: "1 week", difficulty: "Intermediate", details: "Wireless hacking – WPA2 cracking, evil twin",
+              resources: [
+                { title: "Wireless Hacking", url: "https://www.youtube.com/results?search_query=Wireless+hacking+WPA2", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p3-t5", name: "CTF Strategy", description: "Capture The Flag competitions", timeEstimate: "1 week", difficulty: "Intermediate", details: "Capture The Flag (CTF) competition strategy",
+              resources: [
+                { title: "CTF Tamil Guide", url: "https://www.youtube.com/results?search_query=CTF+capture+the+flag+tamil+tutorial", type: "video" },
+                { title: "PicoCTF", url: "https://picoctf.org/", type: "tool" }
+              ]
+            },
+            {
+              id: "eh-p3-t6", name: "Writing Pentest Reports", description: "Documentation", timeEstimate: "1 week", difficulty: "Intermediate", details: "Writing penetration testing reports",
+              resources: [
+                { title: "Pentest Reports", url: "https://www.youtube.com/results?search_query=Writing+penetration+testing+reports", type: "video" }
+              ]
+            },
+            {
+              id: "eh-p3-t7", name: "Bug Bounty Hunting", description: "HackerOne, Bugcrowd", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Bug bounty hunting – HackerOne, Bugcrowd workflow",
+              resources: [
+                { title: "HackerOne Platform", url: "https://www.hackerone.com/", type: "tool" },
+                { title: "PortSwigger Web Academy", url: "https://portswigger.net/web-security", type: "docs" }
+              ]
+            },
+            {
+              id: "eh-p3-t8", name: "Certifications", description: "CEH / OSCP roadmap", timeEstimate: "1 week", difficulty: "Intermediate", details: "CEH / OSCP certification roadmap",
+              resources: [
+                { title: "CEH / OSCP roadmap", url: "https://www.youtube.com/results?search_query=CEH+OSCP+certification+roadmap", type: "video" }
               ]
             }
           ]
         }
-      ],
+      ]
     },
-    { 
-      id: "app-sec", slug: "application-security", name: "Application Security", 
-      description: "Secure web and mobile applications against modern attack vectors.", 
-      difficulty: "Advanced", estimatedTime: "4-6 months", icon: "Lock", 
-      tags: ["OWASP", "Burp Suite", "Web Security"],
+    {
+      id: "network-security", slug: "network-security", name: "Network Security",
+      description: "Secure the infrastructure everything runs on.",
+      difficulty: "Intermediate", estimatedTime: "4-6 months", icon: "Wifi",
+      tags: ["Networks", "Firewalls", "VPN"],
       phases: [
-        { 
-          id: "as-p1", title: "OWASP Top 10", description: "Common vulnerabilities", 
+        {
+          id: "ns-p1", title: "Networking & Security Basics", description: "TCP/IP, Firewalls, and Wireshark",
           topics: [
-            { 
-              id: "as-t1", name: "Injection & XSS", description: "Input validation flaws", timeEstimate: "3 weeks", difficulty: "Intermediate", 
-              details: "Understanding SQL/NoSQL injections and Cross-Site Scripting (XSS). How to exploit and how to patch.", 
+            {
+              id: "ns-p1-t1", name: "TCP/IP Deep Dive", description: "Handshakes, headers", timeEstimate: "1 week", difficulty: "Intermediate", details: "TCP/IP deep dive – handshakes, headers, flags",
               resources: [
-                { title: "OWASP XSS Guide", url: "https://owasp.org/www-community/attacks/xss/", type: "docs" },
-                { title: "PortSwigger Web Security Academy", url: "https://portswigger.net/web-security", type: "course" }
-              ] 
+                { title: "Computer Networking Course", url: "https://www.youtube.com/watch?v=qiQR5rTSshw", type: "video" }
+              ]
             },
             {
-              id: "as-t2", name: "Authentication & CSRF", description: "Broken access control", timeEstimate: "2 weeks", difficulty: "Intermediate",
-              details: "Exploiting broken JWTs, session hijacking, and Cross-Site Request Forgery (CSRF).",
+              id: "ns-p1-t2", name: "Subnetting", description: "CIDR notation", timeEstimate: "1 week", difficulty: "Intermediate", details: "Subnetting and CIDR notation",
               resources: [
-                { title: "JWT Attack Guide", url: "https://portswigger.net/web-security/jwt", type: "article" }
+                { title: "Network Security Tamil", url: "https://www.youtube.com/results?search_query=network+security+tamil+tutorial+full+course", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p1-t3", name: "Common Protocols", description: "DNS, DHCP, ARP", timeEstimate: "1 week", difficulty: "Intermediate", details: "Common protocols – DNS, DHCP, ARP, ICMP, FTP, SSH",
+              resources: [
+                { title: "Common Protocols", url: "https://www.youtube.com/results?search_query=Common+protocols+DNS+DHCP+ARP", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p1-t4", name: "Firewalls", description: "Stateful vs stateless", timeEstimate: "1 week", difficulty: "Intermediate", details: "Firewalls – types, stateful vs stateless",
+              resources: [
+                { title: "Professor Messer – Network+", url: "https://www.professormesser.com/network-plus/n10-008/n10-008-video/n10-008-training-course/", type: "course" }
+              ]
+            },
+            {
+              id: "ns-p1-t5", name: "VPNs", description: "IPSec, SSL/TLS", timeEstimate: "1 week", difficulty: "Intermediate", details: "VPNs – how they work, IPSec, SSL/TLS VPN",
+              resources: [
+                { title: "VPNs", url: "https://www.youtube.com/results?search_query=VPNs+IPSec+SSL+TLS+VPN", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p1-t6", name: "IDS vs IPS", description: "Detection and prevention", timeEstimate: "1 week", difficulty: "Intermediate", details: "IDS vs IPS – detection and prevention",
+              resources: [
+                { title: "IDS vs IPS", url: "https://www.youtube.com/results?search_query=IDS+vs+IPS+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p1-t7", name: "Wireshark Basics", description: "Packet capture", timeEstimate: "1 week", difficulty: "Intermediate", details: "Wireshark – packet capture and analysis basics",
+              resources: [
+                { title: "Wireshark Official Docs", url: "https://www.wireshark.org/docs/", type: "docs" }
+              ]
+            },
+            {
+              id: "ns-p1-t8", name: "Network Topology", description: "DMZ architecture", timeEstimate: "1 week", difficulty: "Intermediate", details: "Network topology and DMZ architecture",
+              resources: [
+                { title: "Network Topology", url: "https://www.youtube.com/results?search_query=Network+topology+DMZ+architecture", type: "video" }
               ]
             }
-          ] 
+          ]
         },
         {
-          id: "as-p2", title: "Web Pentesting", description: "Tools of the trade",
+          id: "ns-p2", title: "Threats & Defense", description: "Mitigating network attacks and monitoring traffic",
           topics: [
             {
-              id: "as-t3", name: "Burp Suite Essentials", description: "Web proxying", timeEstimate: "2 weeks", difficulty: "Advanced",
-              details: "Intercepting traffic, modifying headers, using Repeater/Intruder to manipulate requests in real-time.",
+              id: "ns-p2-t1", name: "Common Network Attacks", description: "DDoS, DNS poisoning", timeEstimate: "1 week", difficulty: "Intermediate", details: "Common network attacks – DDoS, DNS poisoning, VLAN hopping",
               resources: [
-                { title: "Getting started with Burp Suite", url: "https://portswigger.net/burp/documentation/desktop/getting-started", type: "docs" }
+                { title: "Network Attacks", url: "https://www.youtube.com/results?search_query=Network+attacks+DDoS+DNS+poisoning", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p2-t2", name: "Intrusion Detection", description: "Snort setup", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Intrusion Detection with Snort",
+              resources: [
+                { title: "Snort IDS Tutorial", url: "https://www.youtube.com/results?search_query=snort+IDS+tutorial+beginners", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p2-t3", name: "Firewall Rules", description: "iptables on Linux", timeEstimate: "1 week", difficulty: "Advanced", details: "Firewall rules and iptables on Linux",
+              resources: [
+                { title: "TryHackMe – SOC Level 1", url: "https://tryhackme.com/path/outline/soclevel1", type: "tool" }
+              ]
+            },
+            {
+              id: "ns-p2-t4", name: "Network Segmentation", description: "VLANs", timeEstimate: "1 week", difficulty: "Intermediate", details: "Network segmentation strategies",
+              resources: [
+                { title: "Network Segmentation", url: "https://www.youtube.com/results?search_query=Network+segmentation+strategies", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p2-t5", name: "Zero Trust Architecture", description: "Identity-aware networks", timeEstimate: "1 week", difficulty: "Intermediate", details: "Zero Trust Network Architecture",
+              resources: [
+                { title: "Zero Trust Architecture", url: "https://www.youtube.com/results?search_query=Zero+Trust+Network+Architecture", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p2-t6", name: "SIEM Systems", description: "Splunk basics", timeEstimate: "2 weeks", difficulty: "Advanced", details: "SIEM systems – Splunk basics",
+              resources: [
+                { title: "Splunk Tamil Tutorial", url: "https://www.youtube.com/results?search_query=splunk+SIEM+tamil+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p2-t7", name: "Log Analysis", description: "Anomaly detection", timeEstimate: "1 week", difficulty: "Advanced", details: "Log analysis and anomaly detection",
+              resources: [
+                { title: "Log Analysis", url: "https://www.youtube.com/results?search_query=Log+analysis+anomaly+detection", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p2-t8", name: "TLS/SSL", description: "Certificates, PKI", timeEstimate: "1 week", difficulty: "Intermediate", details: "TLS/SSL – certificates, handshake, PKI",
+              resources: [
+                { title: "Cisco Networking Academy", url: "https://www.netacad.com/", type: "course" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "ns-p3", title: "Advanced & Certifications", description: "Cloud network security, forensics, and incident response",
+          topics: [
+            {
+              id: "ns-p3-t1", name: "BGP Hijacking", description: "Route security", timeEstimate: "1 week", difficulty: "Advanced", details: "BGP hijacking and route security",
+              resources: [
+                { title: "BGP Hijacking", url: "https://www.youtube.com/results?search_query=BGP+hijacking+route+security", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p3-t2", name: "Network Forensics", description: "Analyzing attacks", timeEstimate: "1 week", difficulty: "Advanced", details: "Network forensics – capturing and analyzing attacks",
+              resources: [
+                { title: "Network Forensics Tamil", url: "https://www.youtube.com/results?search_query=network+forensics+security+tamil", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p3-t3", name: "Cloud Network Security", description: "AWS VPC, Security Groups", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Cloud network security – AWS VPC, Security Groups",
+              resources: [
+                { title: "AWS Security Specialty", url: "https://www.youtube.com/watch?v=9CXfFJR78S0", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p3-t4", name: "SDN Security", description: "Software Defined Networking", timeEstimate: "1 week", difficulty: "Advanced", details: "Software Defined Networking (SDN) security",
+              resources: [
+                { title: "Cybrary Security Courses", url: "https://www.cybrary.it/", type: "course" }
+              ]
+            },
+            {
+              id: "ns-p3-t5", name: "Pentesting a Network", description: "Full methodology", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Penetration testing a network – full methodology",
+              resources: [
+                { title: "Network Pentesting", url: "https://www.youtube.com/results?search_query=Penetration+testing+a+network", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p3-t6", name: "CompTIA Security+", description: "Exam prep", timeEstimate: "2 weeks", difficulty: "Beginner", details: "CompTIA Security+ exam prep",
+              resources: [
+                { title: "CompTIA Security+ Professor Messer", url: "https://www.professormesser.com/security-plus/", type: "course" }
+              ]
+            },
+            {
+              id: "ns-p3-t7", name: "Cisco CCNA Security", description: "Security concepts", timeEstimate: "1 week", difficulty: "Intermediate", details: "Cisco CCNA Security concepts",
+              resources: [
+                { title: "CCNA Security", url: "https://www.youtube.com/results?search_query=Cisco+CCNA+Security+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "ns-p3-t8", name: "Incident Response", description: "Handling network breaches", timeEstimate: "1 week", difficulty: "Advanced", details: "Incident response for network breaches",
+              resources: [
+                { title: "Incident Response", url: "https://www.youtube.com/results?search_query=Incident+response+network+breaches", type: "video" }
               ]
             }
           ]
         }
-      ],
+      ]
     },
-    { 
-      id: "net-sec", slug: "network-security", name: "Network Security", 
-      description: "Defend networks, manage firewalls, and detect intrusions.", 
-      difficulty: "Intermediate", estimatedTime: "5-7 months", icon: "Wifi", 
-      tags: ["Firewalls", "IDS/IPS", "Cryptography"],
+    {
+      id: "app-security", slug: "application-security", name: "Application Security",
+      description: "Find and fix vulnerabilities before attackers do.",
+      difficulty: "Advanced", estimatedTime: "5-7 months", icon: "Lock",
+      tags: ["OWASP", "Burp Suite", "SAST/DAST"],
       phases: [
-        { 
-          id: "ns-p1", title: "Perimeter Defense", description: "Keeping the bad guys out", 
+        {
+          id: "as-p1", title: "Web Security Fundamentals", description: "How the web works and common vulnerabilities",
           topics: [
-            { 
-              id: "ns-t1", name: "Firewalls & Cryptography", description: "Encryption and rules", timeEstimate: "3 weeks", difficulty: "Intermediate", 
-              details: "Configuring stateful/stateless firewalls, understanding symmetric vs asymmetric encryption, and PKI/Certificates.", 
+            {
+              id: "as-p1-t1", name: "How the Web Works", description: "HTTP/HTTPS, cookies", timeEstimate: "1 week", difficulty: "Beginner", details: "How the web works – HTTP/HTTPS, cookies, sessions, headers",
               resources: [
-                { title: "Cryptography I (Stanford)", url: "https://www.coursera.org/learn/crypto", type: "course" }
-              ] 
+                { title: "Web Architecture Sec tutorial", url: "https://www.youtube.com/results?search_query=How+the+web+works+security+HTTP", type: "video" }
+              ]
             },
             {
-              id: "ns-t2", name: "Intrusion Detection", description: "IDS & IPS", timeEstimate: "2 weeks", difficulty: "Advanced",
-              details: "Setting up Snort/Suricata rules, analyzing logs, and distinguishing false positives.",
+              id: "as-p1-t2", name: "OWASP Top 10", description: "Core vulnerabilities", timeEstimate: "1 week", difficulty: "Beginner", details: "OWASP Top 10 – understanding each vulnerability",
               resources: [
-                { title: "Snort User Manual", url: "https://www.snort.org/documents", type: "docs" }
+                { title: "Web Application Security Course", url: "https://www.youtube.com/watch?v=F5KJVuii0Yw", type: "video" },
+                { title: "OWASP Official Docs", url: "https://owasp.org/www-project-top-ten/", type: "docs" }
+              ]
+            },
+            {
+              id: "as-p1-t3", name: "SQL Injection", description: "Exploitation and prevention", timeEstimate: "2 weeks", difficulty: "Intermediate", details: "SQL Injection – types, exploitation, prevention",
+              resources: [
+                { title: "OWASP Top 10 Tamil", url: "https://www.youtube.com/results?search_query=OWASP+top+10+tamil+web+security", type: "video" }
+              ]
+            },
+            {
+              id: "as-p1-t4", name: "Cross-Site Scripting (XSS)", description: "Stored, reflected", timeEstimate: "2 weeks", difficulty: "Intermediate", details: "Cross-Site Scripting (XSS) – stored, reflected, DOM-based",
+              resources: [
+                { title: "PortSwigger Web Security Academy", url: "https://portswigger.net/web-security", type: "tool" }
+              ]
+            },
+            {
+              id: "as-p1-t5", name: "CSRF", description: "Cross-Site Request Forgery", timeEstimate: "1 week", difficulty: "Intermediate", details: "Cross-Site Request Forgery (CSRF)",
+              resources: [
+                { title: "CSRF Tutorial", url: "https://www.youtube.com/results?search_query=Cross-Site+Request+Forgery+CSRF", type: "video" }
+              ]
+            },
+            {
+              id: "as-p1-t6", name: "Authentication Flaws", description: "Weak passwords", timeEstimate: "1 week", difficulty: "Intermediate", details: "Authentication flaws – weak passwords, session fixation",
+              resources: [
+                { title: "Authentication Flaws", url: "https://www.youtube.com/results?search_query=Authentication+flaws+session+fixation", type: "video" }
+              ]
+            },
+            {
+              id: "as-p1-t7", name: "Security Misconfigs", description: "Basic deployment flaws", timeEstimate: "1 week", difficulty: "Beginner", details: "Security misconfigurations",
+              resources: [
+                { title: "Security Misconfigs", url: "https://www.youtube.com/results?search_query=Security+misconfigurations", type: "video" }
+              ]
+            },
+            {
+              id: "as-p1-t8", name: "Burp Suite Basics", description: "Intercepting requests", timeEstimate: "2 weeks", difficulty: "Intermediate", details: "Burp Suite basics – intercepting and modifying requests",
+              resources: [
+                { title: "Burp Suite Basics", url: "https://www.youtube.com/results?search_query=Burp+Suite+basics+intercept", type: "video" }
               ]
             }
-          ] 
+          ]
         },
         {
-          id: "ns-p2", title: "Incident Response", description: "When things go wrong",
+          id: "as-p2", title: "Exploitation & Secure Coding", description: "Advanced attacks and code defense",
           topics: [
             {
-              id: "ns-t3", name: "SIEM & SOC Operations", description: "Security logging", timeEstimate: "3 weeks", difficulty: "Advanced",
-              details: "Aggregating logs with Splunk or ELK stack. Creating alerts and responding to security incidents.",
+              id: "as-p2-t1", name: "Advanced SQLi", description: "Blind, time-based", timeEstimate: "1 week", difficulty: "Advanced", details: "Advanced SQL injection – blind, time-based, out-of-band",
               resources: [
-                { title: "Splunk Fundamental Training (Free)", url: "https://www.splunk.com/en_us/training.html", type: "course" }
+                { title: "Advanced SQLi", url: "https://www.youtube.com/results?search_query=Advanced+SQL+injection+blind+time-based", type: "video" }
+              ]
+            },
+            {
+              id: "as-p2-t2", name: "XXE", description: "XML External Entity", timeEstimate: "1 week", difficulty: "Advanced", details: "XXE – XML External Entity injection",
+              resources: [
+                { title: "XXE Tutorial", url: "https://www.youtube.com/results?search_query=XXE+XML+External+Entity+injection", type: "video" }
+              ]
+            },
+            {
+              id: "as-p2-t3", name: "SSRF", description: "Server Side Request Forgery", timeEstimate: "1 week", difficulty: "Advanced", details: "SSRF – Server Side Request Forgery",
+              resources: [
+                { title: "Burp Suite Full Course", url: "https://www.youtube.com/watch?v=G3hpAeoZ4ek", type: "video" }
+              ]
+            },
+            {
+              id: "as-p2-t4", name: "Insecure Deserialization", description: "Object injections", timeEstimate: "1 week", difficulty: "Advanced", details: "Insecure Deserialization",
+              resources: [
+                { title: "Web App Pentesting Tamil", url: "https://www.youtube.com/results?search_query=web+application+penetration+testing+tamil", type: "video" }
+              ]
+            },
+            {
+              id: "as-p2-t5", name: "JWT Attacks", description: "alg:none, secret cracking", timeEstimate: "1 week", difficulty: "Advanced", details: "JWT attacks – alg:none, secret brute force",
+              resources: [
+                { title: "JWT Attacks Guide", url: "https://www.youtube.com/results?search_query=JWT+attacks+security", type: "video" }
+              ]
+            },
+            {
+              id: "as-p2-t6", name: "File Upload Vulnerabilities", description: "Reverse shells", timeEstimate: "1 week", difficulty: "Intermediate", details: "File upload vulnerabilities",
+              resources: [
+                { title: "DVWA Practice", url: "https://github.com/digininja/DVWA", type: "tool" }
+              ]
+            },
+            {
+              id: "as-p2-t7", name: "Secure Coding Practices", description: "Input validation", timeEstimate: "1 week", difficulty: "Advanced", details: "Secure coding practices – input validation, output encoding",
+              resources: [
+                { title: "Secure Coding", url: "https://www.youtube.com/results?search_query=Secure+coding+practices", type: "video" }
+              ]
+            },
+            {
+              id: "as-p2-t8", name: "SAST and DAST", description: "Semgrep, ZAP tools", timeEstimate: "1 week", difficulty: "Intermediate", details: "SAST and DAST tools – Semgrep, OWASP ZAP",
+              resources: [
+                { title: "HackTheBox Web Challenges", url: "https://app.hackthebox.com/challenges", type: "tool" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "as-p3", title: "Advanced & Mobile App Security", description: "APIs, Mobile, DevSecOps",
+          topics: [
+            {
+              id: "as-p3-t1", name: "API Security Testing", description: "REST and GraphQL", timeEstimate: "2 weeks", difficulty: "Advanced", details: "API security testing – REST and GraphQL vulnerabilities",
+              resources: [
+                { title: "API Security Course", url: "https://www.youtube.com/watch?v=CkVvB5aQLFE", type: "video" }
+              ]
+            },
+            {
+              id: "as-p3-t2", name: "OAuth 2.0 & OpenID", description: "Authentication flows", timeEstimate: "1 week", difficulty: "Advanced", details: "OAuth 2.0 and OpenID Connect attack surface",
+              resources: [
+                { title: "Mobile App Security Tamil", url: "https://www.youtube.com/results?search_query=mobile+app+security+android+tamil+tutorial", type: "video" }
+              ]
+            },
+            {
+              id: "as-p3-t3", name: "Android App Security", description: "APK reverse engineering", timeEstimate: "2 weeks", difficulty: "Advanced", details: "Mobile app security – Android APK reverse engineering basics",
+              resources: [
+                { title: "OWASP Mobile Security Guide", url: "https://mas.owasp.org/MASTG/", type: "docs" }
+              ]
+            },
+            {
+              id: "as-p3-t4", name: "iOS App Security", description: "Binary analysis", timeEstimate: "1 week", difficulty: "Advanced", details: "iOS app security – binary analysis basics",
+              resources: [
+                { title: "iOS App Security", url: "https://www.youtube.com/results?search_query=iOS+app+security+binary+analysis", type: "video" }
+              ]
+            },
+            {
+              id: "as-p3-t5", name: "Threat Modeling", description: "STRIDE framework", timeEstimate: "1 week", difficulty: "Intermediate", details: "Threat modeling – STRIDE framework",
+              resources: [
+                { title: "TryHackMe Web Fundamentals", url: "https://tryhackme.com/path/outline/web", type: "tool" }
+              ]
+            },
+            {
+              id: "as-p3-t6", name: "DevSecOps", description: "Security in CI/CD", timeEstimate: "1 week", difficulty: "Advanced", details: "DevSecOps – integrating security into CI/CD",
+              resources: [
+                { title: "DevSecOps", url: "https://www.youtube.com/results?search_query=DevSecOps+integrating+security", type: "video" }
+              ]
+            },
+            {
+              id: "as-p3-t7", name: "Container Security", description: "Docker, Kubernetes", timeEstimate: "1 week", difficulty: "Advanced", details: "Container security – Docker and Kubernetes vulnerabilities",
+              resources: [
+                { title: "Container Security", url: "https://www.youtube.com/results?search_query=Container+security+Docker+Kubernetes", type: "video" }
+              ]
+            },
+            {
+              id: "as-p3-t8", name: "Bug Bounty Reports", description: "Writing good reports", timeEstimate: "1 week", difficulty: "Intermediate", details: "Bug bounty – writing good vulnerability reports",
+              resources: [
+                { title: "HackerOne Hacktivity", url: "https://hackerone.com/hacktivity", type: "docs" }
               ]
             }
           ]
         }
-      ],
-    },
-  ],
+      ]
+    }
+  ]
 };
 
 export const coreCsDomain: Domain = {
