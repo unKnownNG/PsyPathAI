@@ -53,14 +53,14 @@ export default function RoadmapFlow({ phases, accentColor }: Props) {
       {/* Central spine — solid */}
       <div style={{
         position: "absolute", left: spineX, transform: "translateX(-50%)",
-        top: 0, bottom: 0, width: "3px",
+        top: "60px", bottom: "100px", width: "3px",
         background: `linear-gradient(to bottom, ${accentColor}, #34d399)`,
         opacity: 0.35, zIndex: 0,
       }} />
       {/* Central spine — glow */}
       <div style={{
         position: "absolute", left: spineX, transform: "translateX(-50%)",
-        top: 0, bottom: 0, width: "3px",
+        top: "60px", bottom: "100px", width: "3px",
         background: `linear-gradient(to bottom, ${accentColor}, #34d399)`,
         filter: "blur(8px)", opacity: 0.2, zIndex: 0,
       }} />
@@ -102,8 +102,11 @@ export default function RoadmapFlow({ phases, accentColor }: Props) {
 
             {/* Phase badge */}
             <div style={{
-              padding: "14px 28px", borderRadius: "14px",
-              background: `${accentColor}12`, border: `1px solid ${accentColor}25`,
+              padding: "16px 32px", borderRadius: "16px",
+              backgroundColor: "#0a0f1a",
+              backgroundImage: `linear-gradient(to right, ${accentColor}15, ${accentColor}15)`,
+              border: `1px solid ${accentColor}30`,
+              boxShadow: "0 8px 16px -4px rgba(0,0,0,0.5)",
               textAlign: isMobile ? "left" : "center", zIndex: 4,
               position: "relative",
             }}>
@@ -301,8 +304,11 @@ export default function RoadmapFlow({ phases, accentColor }: Props) {
         )}
         <div style={{
           padding: "14px 24px", borderRadius: "14px",
-          background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)",
-          display: "flex", alignItems: "center", gap: "10px", zIndex: 2,
+          backgroundColor: "#0a0f1a",
+          backgroundImage: "linear-gradient(to right, rgba(52,211,153,0.1), rgba(52,211,153,0.1))",
+          border: "1px solid rgba(52,211,153,0.3)",
+          boxShadow: "0 8px 16px -4px rgba(0,0,0,0.5)",
+          display: "flex", alignItems: "center", gap: "10px", zIndex: 4,
           position: "relative",
         }}>
           <Trophy style={{ width: "18px", height: "18px", color: "#34d399" }} />
