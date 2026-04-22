@@ -10,6 +10,13 @@ export const hardwareDomain: Domain = {
       description: "Write firmware that talks directly to hardware.",
       difficulty: "Advanced", estimatedTime: "6-10 months", icon: "Cpu",
       tags: ["C Programming", "Microcontrollers", "RTOS"],
+      resources: [
+        { title: "Embedded Systems Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=mSVeY6oRn8k", type: "video" },
+        { title: "FreeRTOS Official Documentation", url: "https://www.freertos.org/Documentation/RTOS_book.html", type: "docs" },
+        { title: "Controllers Tech – STM32 Channel", url: "https://www.youtube.com/@controllerstech", type: "course" },
+        { title: "Arduino Official Documentation", url: "https://docs.arduino.cc/learn/", type: "docs" },
+        { title: "Embedded Systems Tamil Tutorial", url: "https://www.youtube.com/results?search_query=embedded+systems+tamil+tutorial+arduino+STM32", type: "video" },
+      ],
       phases: [
         {
           id: "emb-p1", title: "Foundations", description: "C programming and basic microcontrollers",
@@ -177,6 +184,13 @@ export const hardwareDomain: Domain = {
       description: "Design the hardware that embedded software runs on.",
       difficulty: "Intermediate", estimatedTime: "4-6 months", icon: "Zap",
       tags: ["PCB Design", "KiCad", "Electronics"],
+      resources: [
+        { title: "Phil's Lab – PCB Design & Electronics", url: "https://www.youtube.com/@PhilsLab", type: "course" },
+        { title: "KiCad Official Documentation", url: "https://docs.kicad.org/", type: "docs" },
+        { title: "All About Electronics – Circuit Theory", url: "https://www.youtube.com/@AllAboutElectronics", type: "video" },
+        { title: "Khan Academy – Electrical Engineering", url: "https://www.khanacademy.org/science/electrical-engineering", type: "course" },
+        { title: "PCB Design & Electronics Tamil Tutorial", url: "https://www.youtube.com/results?search_query=PCB+design+electronics+tamil+tutorial+kicad", type: "video" },
+      ],
       phases: [
         {
           id: "pcb-p1", title: "Electronics Fundamentals", description: "Circuit theory and components",
@@ -344,6 +358,13 @@ export const hardwareDomain: Domain = {
       description: "Design hardware circuits with code. The bridge between software and silicon.",
       difficulty: "Advanced", estimatedTime: "5-8 months", icon: "Layers",
       tags: ["FPGA", "Verilog", "Digital Logic"],
+      resources: [
+        { title: "Nandland – FPGA & Verilog Courses", url: "https://www.nandland.com/", type: "course" },
+        { title: "HDLBits – Verilog Practice Problems", url: "https://hdlbits.01xz.net/wiki/Main_Page", type: "tool" },
+        { title: "Neso Academy – Digital Electronics Playlist", url: "https://www.youtube.com/playlist?list=PLBlnK6fEyqRjMH3mWf6kwqiTbT798eAOm", type: "course" },
+        { title: "MIT OCW – Computation Structures", url: "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/", type: "course" },
+        { title: "FPGA & Digital Logic Tamil Tutorial", url: "https://www.youtube.com/results?search_query=FPGA+verilog+digital+logic+tamil+tutorial", type: "video" },
+      ],
       phases: [
         {
           id: "fpga-p1", title: "Digital Logic Foundations", description: "Gates, algebra, and sequential circuits",

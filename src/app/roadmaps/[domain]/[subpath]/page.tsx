@@ -3,10 +3,29 @@ import { use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, ChevronRight, MessageCircle, Construction } from "lucide-react";
+import {
+  ArrowLeft, ChevronRight, MessageCircle, Construction,
+  BookOpen, Play, FileText, GraduationCap, Wrench, ExternalLink,
+} from "lucide-react";
 import { getDomainBySlug, getSubPathBySlug } from "@/data/roadmaps";
 import DynamicIcon from "@/components/DynamicIcon";
 import RoadmapFlow from "@/components/RoadmapFlow";
+
+const RES_ICONS: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
+  docs: BookOpen,
+  video: Play,
+  article: FileText,
+  course: GraduationCap,
+  tool: Wrench,
+};
+
+const RES_COLORS: Record<string, string> = {
+  docs: "#60a5fa",
+  video: "#f87171",
+  article: "#34d399",
+  course: "#a78bfa",
+  tool: "#fbbf24",
+};
 
 const hasRoadmapData = (phases: { topics: unknown[] }[]) =>
   phases.length > 0 && phases.some((p) => p.topics.length > 0);
@@ -52,6 +71,76 @@ export default function SubPathPage({ params }: { params: Promise<{ domain: stri
           ))}
         </div>
       </motion.div>
+
+      {/* Path-level Resources */}
+      {subpath.resources && subpath.resources.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="glass-card"
+          style={{ padding: "28px", marginBottom: "48px" }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+            <div style={{
+              width: "36px", height: "36px", borderRadius: "10px",
+              background: `linear-gradient(135deg, ${domain.color}20, ${domain.color}08)`,
+              border: `1px solid ${domain.color}25`,
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <BookOpen style={{ width: "18px", height: "18px", color: domain.color }} />
+            </div>
+            <div>
+              <h2 className="font-bold font-heading" style={{ fontSize: "1rem" }}>Recommended Resources</h2>
+              <p className="text-muted" style={{ fontSize: "0.75rem", marginTop: "2px" }}>Full courses, docs & channels for this path</p>
+            </div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "10px" }}>
+            {subpath.resources.map((res, ri) => {
+              const ResIcon = RES_ICONS[res.type] || FileText;
+              const resColor = RES_COLORS[res.type] || "#94a3b8";
+              return (
+                <a
+                  key={ri}
+                  href={res.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "flex", alignItems: "center", gap: "12px",
+                    padding: "14px 16px", borderRadius: "12px",
+                    background: "rgba(17,24,39,0.6)",
+                    border: "1px solid rgba(148,163,184,0.08)",
+                    textDecoration: "none", transition: "all 0.25s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = "rgba(17,24,39,0.9)";
+                    (e.currentTarget as HTMLElement).style.borderColor = `${resColor}30`;
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = "rgba(17,24,39,0.6)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(148,163,184,0.08)";
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  }}
+                >
+                  <div style={{
+                    width: "32px", height: "32px", borderRadius: "8px",
+                    background: `${resColor}12`, border: `1px solid ${resColor}20`,
+                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                  }}>
+                    <ResIcon style={{ width: "15px", height: "15px", color: resColor }} />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: "0.85rem", color: "#e2e8f0", fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{res.title}</p>
+                    <span style={{ fontSize: "0.68rem", color: resColor, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>{res.type}</span>
+                  </div>
+                  <ExternalLink style={{ width: "13px", height: "13px", color: "#475569", flexShrink: 0 }} />
+                </a>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
 
       {/* Roadmap or Coming Soon */}
       {hasRoadmapData(subpath.phases) ? (

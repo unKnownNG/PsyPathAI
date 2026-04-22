@@ -10,6 +10,13 @@ export const cyberDomain: Domain = {
       description: "Think like an attacker. Defend like a pro.",
       difficulty: "Advanced", estimatedTime: "5-7 months", icon: "Bug",
       tags: ["Kali Linux", "Pentesting", "Metasploit"],
+      resources: [
+        { title: "Ethical Hacking Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=3Kq1MIfTWCE", type: "video" },
+        { title: "TryHackMe – Beginner Path", url: "https://tryhackme.com/path/outline/beginner", type: "tool" },
+        { title: "TCM Security – Practical Ethical Hacking", url: "https://www.youtube.com/@TCMSecurityAcademy", type: "course" },
+        { title: "PortSwigger Web Security Academy", url: "https://portswigger.net/web-security", type: "tool" },
+        { title: "Ethical Hacking Tamil Full Course", url: "https://www.youtube.com/results?search_query=ethical+hacking+full+course+tamil+kali+linux", type: "video" },
+      ],
       phases: [
         {
           id: "eh-p1", title: "Foundations", description: "Basics of Linux, Networking, and Recon",
@@ -186,6 +193,13 @@ export const cyberDomain: Domain = {
       description: "Secure the infrastructure everything runs on.",
       difficulty: "Intermediate", estimatedTime: "4-6 months", icon: "Wifi",
       tags: ["Networks", "Firewalls", "VPN"],
+      resources: [
+        { title: "Computer Networking Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=qiQR5rTSshw", type: "video" },
+        { title: "Professor Messer – CompTIA Network+", url: "https://www.professormesser.com/network-plus/", type: "course" },
+        { title: "Wireshark Official Documentation", url: "https://www.wireshark.org/docs/", type: "docs" },
+        { title: "Cisco Networking Academy", url: "https://www.netacad.com/", type: "course" },
+        { title: "Network Security Tamil Full Course", url: "https://www.youtube.com/results?search_query=network+security+tamil+full+course+beginners", type: "video" },
+      ],
       phases: [
         {
           id: "ns-p1", title: "Networking & Security Basics", description: "TCP/IP, Firewalls, and Wireshark",
@@ -353,6 +367,13 @@ export const cyberDomain: Domain = {
       description: "Find and fix vulnerabilities before attackers do.",
       difficulty: "Advanced", estimatedTime: "5-7 months", icon: "Lock",
       tags: ["OWASP", "Burp Suite", "SAST/DAST"],
+      resources: [
+        { title: "Web Application Security Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=F5KJVuii0Yw", type: "video" },
+        { title: "OWASP Top 10 Official Documentation", url: "https://owasp.org/www-project-top-ten/", type: "docs" },
+        { title: "PortSwigger Web Security Academy (Free)", url: "https://portswigger.net/web-security", type: "tool" },
+        { title: "Burp Suite Full Course", url: "https://www.youtube.com/watch?v=G3hpAeoZ4ek", type: "video" },
+        { title: "Application Security Tamil Tutorial", url: "https://www.youtube.com/results?search_query=web+application+security+OWASP+tamil+tutorial", type: "video" },
+      ],
       phases: [
         {
           id: "as-p1", title: "Web Security Fundamentals", description: "How the web works and common vulnerabilities",
@@ -529,6 +550,13 @@ export const coreCsDomain: Domain = {
       description: "Interview-focused. Follow this order strictly — each phase builds on the previous.", 
       difficulty: "Intermediate", estimatedTime: "6-12 months", icon: "Code", 
       tags: ["LeetCode", "Two Pointers", "Sliding Window", "Dynamic Programming"],
+      resources: [
+        { title: "Striver's A2Z DSA Course", url: "https://takeuforward.org/strivers-a2z-dsa-course/", type: "course" },
+        { title: "NeetCode 150 – Curated Practice Problems", url: "https://neetcode.io/practice", type: "tool" },
+        { title: "Abdul Bari – Algorithms Playlist", url: "https://www.youtube.com/@abdul_bari", type: "video" },
+        { title: "VisuAlgo – Algorithm Visualizer", url: "https://visualgo.net/en", type: "tool" },
+        { title: "DSA Tamil Full Course", url: "https://www.youtube.com/results?search_query=data+structures+algorithms+tamil+full+course+placement", type: "video" },
+      ],
       phases: [
         { 
           id: "dsa-p1", title: "Foundations", description: "Core data structures and complexity analysis", 
@@ -606,6 +634,13 @@ export const coreCsDomain: Domain = {
       description: "Understand concepts and apply them to real-world design scenarios. Focus on being able to talk through trade-offs.", 
       difficulty: "Advanced", estimatedTime: "3-5 months", icon: "Network", 
       tags: ["Scalability", "Microservices", "Architecture", "Distributed Systems"],
+      resources: [
+        { title: "System Design Primer – GitHub", url: "https://github.com/donnemartin/system-design-primer", type: "docs" },
+        { title: "ByteByteGo – System Design Channel", url: "https://www.youtube.com/@ByteByteGo", type: "video" },
+        { title: "Gaurav Sen – System Design", url: "https://www.youtube.com/@gkcs", type: "video" },
+        { title: "System Design Interview – Alex Xu (Book)", url: "https://www.amazon.com/System-Design-Interview-insiders-Second/dp/B08CMF2CQF", type: "docs" },
+        { title: "System Design Tamil Full Course", url: "https://www.youtube.com/results?search_query=system+design+interview+tamil+full+course", type: "video" },
+      ],
       phases: [
         { 
           id: "sd-p1", title: "Fundamentals", description: "Client-Server Architecture and networking basics", 
@@ -673,6 +708,13 @@ export const coreCsDomain: Domain = {
       description: "Focus on SQL fundamentals and relational design. NoSQL and advanced topics are secondary for most student interviews.", 
       difficulty: "Intermediate", estimatedTime: "2-4 months", icon: "Database", 
       tags: ["SQL", "Relational", "NoSQL", "Optimization"],
+      resources: [
+        { title: "SQL Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=HXV3zeQKqGY", type: "video" },
+        { title: "SQLZoo – Interactive SQL Practice", url: "https://sqlzoo.net/", type: "tool" },
+        { title: "W3Schools SQL Tutorial", url: "https://www.w3schools.com/sql/", type: "docs" },
+        { title: "LeetCode SQL 50 Study Plan", url: "https://leetcode.com/studyplan/top-sql-50/", type: "tool" },
+        { title: "SQL & Databases Tamil Full Course", url: "https://www.youtube.com/results?search_query=sql+databases+tamil+full+course+beginners", type: "video" },
+      ],
       phases: [
         { 
           id: "db-p1", title: "SQL Fundamentals", description: "Core SQL querying", 
@@ -740,6 +782,13 @@ export const coreCsDomain: Domain = {
       description: "Essential for systems roles and core CS interviews. Concepts > implementation at this level.", 
       difficulty: "Intermediate", estimatedTime: "2-4 months", icon: "Monitor", 
       tags: ["Linux", "Processes", "Memory", "Concurrency"],
+      resources: [
+        { title: "Operating Systems – Neso Academy Playlist", url: "https://www.youtube.com/playlist?list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O", type: "course" },
+        { title: "OS Three Easy Pieces (Free Textbook)", url: "https://pages.cs.wisc.edu/~remzi/OSTEP/", type: "docs" },
+        { title: "Gate Smashers – OS Playlist", url: "https://www.youtube.com/@GateSmashers", type: "video" },
+        { title: "Linux Command Line – Free Book", url: "https://linuxcommand.org/tlcl.php", type: "docs" },
+        { title: "Operating Systems Tamil Full Course", url: "https://www.youtube.com/results?search_query=operating+systems+tamil+full+course+gate", type: "video" },
+      ],
       phases: [
         { 
           id: "os-p1", title: "Foundations", description: "OS Roles and Processes", 

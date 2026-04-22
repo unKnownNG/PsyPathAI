@@ -10,6 +10,13 @@ export const aiMLDomain: Domain = {
       description: "Understand the math and models behind intelligent systems.",
       difficulty: "Beginner", estimatedTime: "3-5 months", icon: "LineChart",
       tags: ["Python", "Math", "Scikit"],
+      resources: [
+        { title: "Machine Learning Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=NWONeJKn6kc", type: "video" },
+        { title: "Andrew Ng – ML Specialization (Coursera)", url: "https://www.coursera.org/specializations/machine-learning-introduction", type: "course" },
+        { title: "StatQuest – ML & Statistics Playlist", url: "https://www.youtube.com/@statquest", type: "video" },
+        { title: "Scikit-learn Official Documentation", url: "https://scikit-learn.org/stable/user_guide.html", type: "docs" },
+        { title: "Machine Learning Tamil Full Course", url: "https://www.youtube.com/results?search_query=machine+learning+full+course+tamil+beginners", type: "video" },
+      ],
       phases: [
         {
           id: "ml-p1", title: "Math for ML", description: "Linear algebra, calculus, and probability",
@@ -169,6 +176,13 @@ export const aiMLDomain: Domain = {
       description: "Neural networks that learn like the brain — at scale.",
       difficulty: "Intermediate", estimatedTime: "4-6 months", icon: "Network",
       tags: ["PyTorch", "Neural Nets", "CNN"],
+      resources: [
+        { title: "Deep Learning Specialization – Andrew Ng (Coursera)", url: "https://www.coursera.org/specializations/deep-learning", type: "course" },
+        { title: "3Blue1Brown – Neural Networks Series", url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi", type: "video" },
+        { title: "Fast.ai – Practical Deep Learning", url: "https://course.fast.ai/", type: "course" },
+        { title: "PyTorch Official Tutorials", url: "https://pytorch.org/tutorials/", type: "docs" },
+        { title: "Deep Learning Tamil Full Course", url: "https://www.youtube.com/results?search_query=deep+learning+full+course+tamil+neural+networks", type: "video" },
+      ],
       phases: [
         {
           id: "dl-p1", title: "Neural Network Fundamentals", description: "Perceptron and multi-layer perceptron",
@@ -312,6 +326,13 @@ export const aiMLDomain: Domain = {
       description: "Build with large language models — the defining skill of this decade.",
       difficulty: "Advanced", estimatedTime: "3-5 months", icon: "Sparkles",
       tags: ["LLMs", "LangChain", "Agents"],
+      resources: [
+        { title: "Andrej Karpathy – Intro to Large Language Models", url: "https://www.youtube.com/watch?v=zjkBMFhNj_g", type: "video" },
+        { title: "LangChain Full Course", url: "https://www.youtube.com/watch?v=HSZ_uaif57o", type: "video" },
+        { title: "DeepLearning.AI – Generative AI Short Courses", url: "https://www.deeplearning.ai/short-courses/", type: "course" },
+        { title: "Prompt Engineering Guide", url: "https://www.promptingguide.ai/", type: "docs" },
+        { title: "Generative AI Tamil Full Course", url: "https://www.youtube.com/results?search_query=generative+ai+LLM+langchain+tamil+full+course", type: "video" },
+      ],
       phases: [
         {
           id: "gen-p1", title: "LLM Fundamentals", description: "Tokenization, prompts, and APIs",

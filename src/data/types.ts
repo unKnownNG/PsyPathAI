@@ -33,6 +33,7 @@ export interface SubPath {
   tags: string[];
   phases: Phase[];
   icon: string;
+  resources?: Resource[];
 }
 
 export interface Domain {

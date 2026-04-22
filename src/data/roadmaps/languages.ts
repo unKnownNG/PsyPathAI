@@ -17,6 +17,13 @@ export const languagesDomain: Domain = {
       estimatedTime: "2-3 Months",
       tags: ["Scripting", "Data Science", "Backend", "AI"],
       icon: "file-code-2",
+      resources: [
+        { title: "Python Full Course for Beginners – Mosh", url: "https://www.youtube.com/watch?v=kqtD5dpn9C8", type: "video" },
+        { title: "Official Python Documentation", url: "https://docs.python.org/3/tutorial/", type: "docs" },
+        { title: "Automate the Boring Stuff with Python", url: "https://automatetheboringstuff.com/", type: "course" },
+        { title: "Corey Schafer – Python Tutorials", url: "https://www.youtube.com/@coreyms", type: "course" },
+        { title: "Python Full Course Tamil", url: "https://www.youtube.com/results?search_query=python+full+course+tamil+beginners", type: "video" },
+      ],
       phases: [
         {
           id: "py-phase-1",
@@ -334,6 +341,13 @@ export const languagesDomain: Domain = {
       estimatedTime: "4-6 Months",
       tags: ["Systems", "Game Dev", "High Performance", "Embedded"],
       icon: "cpu",
+      resources: [
+        { title: "C Programming Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=KJgsSFOSQv0", type: "video" },
+        { title: "C++ Full Course – The Cherno", url: "https://www.youtube.com/playlist?list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb", type: "course" },
+        { title: "learncpp.com – Free C++ Tutorial", url: "https://www.learncpp.com/", type: "docs" },
+        { title: "CS50 Harvard – Intro to C", url: "https://cs50.harvard.edu/x/", type: "course" },
+        { title: "C / C++ Full Course Tamil", url: "https://www.youtube.com/results?search_query=c+c%2B%2B+programming+full+course+tamil+beginners", type: "video" },
+      ],
       phases: [
         {
           id: "cpp-phase-1",
@@ -648,6 +662,13 @@ export const languagesDomain: Domain = {
       estimatedTime: "3-4 Months",
       tags: ["Enterprise", "Backend", "Android", "OOP"],
       icon: "coffee",
+      resources: [
+        { title: "Java Full Course for Beginners – Mosh", url: "https://www.youtube.com/watch?v=eIrMbAQSU34", type: "video" },
+        { title: "Official Java Tutorials – Oracle", url: "https://docs.oracle.com/javase/tutorial/", type: "docs" },
+        { title: "Amigoscode – Java Tutorials", url: "https://www.youtube.com/@amigoscode", type: "course" },
+        { title: "Spring Boot Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=9SGDpanrc8U", type: "video" },
+        { title: "Java Full Course Tamil", url: "https://www.youtube.com/results?search_query=java+programming+full+course+tamil+beginners", type: "video" },
+      ],
       phases: [
         {
           id: "java-phase-1",

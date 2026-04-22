@@ -10,6 +10,13 @@ export const webDevDomain: Domain = {
       description: "Master HTML, CSS, JavaScript and modern frameworks to build stunning user interfaces.",
       difficulty: "Beginner", estimatedTime: "6-8 months", icon: "Layout",
       tags: ["React", "TypeScript", "CSS", "UI/UX"],
+      resources: [
+        { title: "Frontend Web Development Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=zJSY8tbf_ys", type: "video" },
+        { title: "The Odin Project – Full Stack Path", url: "https://www.theodinproject.com/", type: "course" },
+        { title: "MDN Web Docs – Learn Web Development", url: "https://developer.mozilla.org/en-US/docs/Learn", type: "docs" },
+        { title: "Traversy Media – Web Dev Crash Courses", url: "https://www.youtube.com/@TraversyMedia", type: "video" },
+        { title: "Frontend Development Tamil Full Course", url: "https://www.youtube.com/results?search_query=frontend+web+development+full+course+tamil", type: "video" },
+      ],
       phases: [
         {
           id: "fe-p1", title: "Foundation", description: "Core web technologies",
@@ -41,6 +48,13 @@ export const webDevDomain: Domain = {
       description: "Build robust server-side applications, APIs, and database systems.",
       difficulty: "Intermediate", estimatedTime: "6-9 months", icon: "Server",
       tags: ["Node.js", "APIs", "Databases", "Auth"],
+      resources: [
+        { title: "Backend Development Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=bc3_FL9zWWs", type: "video" },
+        { title: "Node.js Official Documentation", url: "https://nodejs.org/en/docs/", type: "docs" },
+        { title: "Express.js Guide", url: "https://expressjs.com/en/guide/routing.html", type: "docs" },
+        { title: "Codevolution – Node.js Course", url: "https://www.youtube.com/@Codevolution", type: "course" },
+        { title: "Backend Development Tamil Full Course", url: "https://www.youtube.com/results?search_query=backend+development+nodejs+tamil+full+course", type: "video" },
+      ],
       phases: [
         {
           id: "be-p1", title: "Internet & OS Fundamentals", description: "How the web and servers work",
@@ -74,6 +88,13 @@ export const webDevDomain: Domain = {
       description: "Master both frontend and backend to build complete web applications.",
       difficulty: "Advanced", estimatedTime: "10-14 months", icon: "Layers",
       tags: ["React", "Node.js", "Full Stack", "Deployment"],
+      resources: [
+        { title: "Full Stack Web Development – freeCodeCamp", url: "https://www.freecodecamp.org/", type: "course" },
+        { title: "MERN Stack Full Course", url: "https://www.youtube.com/watch?v=CvCiNeLnZ00", type: "video" },
+        { title: "Next.js Full Stack Tutorial", url: "https://nextjs.org/learn", type: "course" },
+        { title: "JavaScript Mastery – Full Stack Projects", url: "https://www.youtube.com/@javascriptmastery", type: "video" },
+        { title: "Full Stack Development Tamil Course", url: "https://www.youtube.com/results?search_query=full+stack+web+development+tamil+mern+course", type: "video" },
+      ],
       phases: [
         {
           id: "fs-p1", title: "Frontend & UI Synergy", description: "Mastering the user interface",

@@ -10,6 +10,13 @@ export const appDevDomain: Domain = {
       description: "Build native apps for the world's most used mobile OS.",
       difficulty: "Intermediate", estimatedTime: "6-8 months", icon: "Code",
       tags: ["Kotlin", "Jetpack Compose", "Android Studio"],
+      resources: [
+        { title: "Android Development Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=fis26HvJ3V0", type: "video" },
+        { title: "Kotlin Full Course for Beginners", url: "https://www.youtube.com/watch?v=F9UC9DY-vIU", type: "video" },
+        { title: "Android Developers – Official Documentation", url: "https://developer.android.com/docs", type: "docs" },
+        { title: "Philipp Lackner – Android Dev Channel", url: "https://www.youtube.com/@PhilippLackner", type: "course" },
+        { title: "Android Codelabs – Hands-on Tutorials", url: "https://developer.android.com/codelabs", type: "docs" },
+      ],
       phases: [
         {
           id: "an-p1", title: "Foundations", description: "Kotlin basics and UI essentials",
@@ -181,6 +188,13 @@ export const appDevDomain: Domain = {
       description: "Build polished apps for iPhone and iPad with Swift.",
       difficulty: "Intermediate", estimatedTime: "6-8 months", icon: "Apple",
       tags: ["Swift", "SwiftUI", "Xcode"],
+      resources: [
+        { title: "iOS Development Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=comQ1-x2a1Q", type: "video" },
+        { title: "100 Days of SwiftUI – Hacking with Swift", url: "https://www.hackingwithswift.com/100/swiftui", type: "course" },
+        { title: "Apple Developer Documentation", url: "https://developer.apple.com/documentation/", type: "docs" },
+        { title: "Sean Allen – iOS Dev Channel", url: "https://www.youtube.com/@seanallen", type: "course" },
+        { title: "iOS Development Tamil Tutorial", url: "https://www.youtube.com/results?search_query=ios+development+swift+tamil+tutorial+beginners", type: "video" },
+      ],
       phases: [
         {
           id: "ios-p1", title: "Foundations", description: "Swift basics and UIKit fundamentals",
@@ -353,6 +367,13 @@ export const appDevDomain: Domain = {
       description: "One codebase. Android and iOS. Ship faster.",
       difficulty: "Intermediate", estimatedTime: "5-7 months", icon: "Layers",
       tags: ["Flutter", "React Native", "Dart"],
+      resources: [
+        { title: "Flutter Full Course for Beginners – freeCodeCamp", url: "https://www.youtube.com/watch?v=VPvVD8t02U8", type: "video" },
+        { title: "React Native Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=0-S5a0eXPoc", type: "video" },
+        { title: "Flutter Official Documentation", url: "https://docs.flutter.dev/", type: "docs" },
+        { title: "Reso Coder – Flutter Tutorials", url: "https://www.youtube.com/@ResoCoder", type: "course" },
+        { title: "Flutter Tamil Tutorial – Beginners", url: "https://www.youtube.com/results?search_query=flutter+tutorial+tamil+beginners+full+course", type: "video" },
+      ],
       phases: [
         {
           id: "cp-p1", title: "Foundations", description: "Frameworks overview and Core UI",

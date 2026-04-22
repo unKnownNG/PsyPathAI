@@ -10,6 +10,12 @@ export const dataDomain: Domain = {
       description: "Extract insights from complex data, perform statistical analysis, and visualize trends.", 
       difficulty: "Intermediate", estimatedTime: "6-8 months", icon: "LineChart", 
       tags: ["Python", "Statistics", "Visualization"],
+      resources: [
+        { title: "Data Science Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=ua-CiDNNj30", type: "video" },
+        { title: "Kaggle Learn – Free Data Science Courses", url: "https://www.kaggle.com/learn", type: "course" },
+        { title: "Pandas Official Documentation", url: "https://pandas.pydata.org/docs/user_guide/index.html", type: "docs" },
+        { title: "Data Science Tamil Full Course", url: "https://www.youtube.com/results?search_query=data+science+full+course+tamil+python", type: "video" },
+      ],
       phases: [
         { 
           id: "ds-p1", title: "Data Foundations", description: "Mathematics & Statistics", 
@@ -59,6 +65,12 @@ export const dataDomain: Domain = {
       description: "Build robust, scalable data pipelines and distributed storage systems.", 
       difficulty: "Advanced", estimatedTime: "6-9 months", icon: "Workflow", 
       tags: ["SQL", "Spark", "Airflow", "ETL"],
+      resources: [
+        { title: "Data Engineering Zoomcamp – DataTalks.Club", url: "https://github.com/DataTalksClub/data-engineering-zoomcamp", type: "course" },
+        { title: "Apache Spark Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=_C8kWso4ne4", type: "video" },
+        { title: "Apache Airflow Documentation", url: "https://airflow.apache.org/docs/", type: "docs" },
+        { title: "Data Engineering Tamil Tutorial", url: "https://www.youtube.com/results?search_query=data+engineering+full+course+tamil+ETL+pipeline", type: "video" },
+      ],
       phases: [
         { 
           id: "de-p1", title: "Storage & Querying", description: "Databases & Warehouses", 
@@ -106,6 +118,12 @@ export const dataDomain: Domain = {
       description: "Manage, deploy, and monitor machine learning models in production environments.", 
       difficulty: "Advanced", estimatedTime: "4-6 months", icon: "Settings", 
       tags: ["Docker", "MLflow", "Kubernetes", "CI/CD"],
+      resources: [
+        { title: "MLOps Zoomcamp – DataTalks.Club", url: "https://github.com/DataTalksClub/mlops-zoomcamp", type: "course" },
+        { title: "MLflow Official Documentation", url: "https://mlflow.org/docs/latest/index.html", type: "docs" },
+        { title: "Made With ML – MLOps Course", url: "https://madewithml.com/", type: "course" },
+        { title: "MLOps Tamil Tutorial", url: "https://www.youtube.com/results?search_query=mlops+deployment+docker+tamil+tutorial", type: "video" },
+      ],
       phases: [
         { 
           id: "mo-p1", title: "Model Management", description: "Tracking & Registering", 
@@ -154,6 +172,12 @@ export const cloudDomain: Domain = {
       description: "Learn cloud provider ecosystems like AWS, GCP, or Azure.", 
       difficulty: "Intermediate", estimatedTime: "4-6 months", icon: "Cloud", 
       tags: ["AWS", "GCP", "IaaS"],
+      resources: [
+        { title: "AWS Cloud Practitioner Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=SOTamWNgDKc", type: "video" },
+        { title: "AWS Official Training", url: "https://aws.amazon.com/training/", type: "course" },
+        { title: "Google Cloud Documentation", url: "https://cloud.google.com/docs", type: "docs" },
+        { title: "Cloud Computing Tamil Full Course", url: "https://www.youtube.com/results?search_query=cloud+computing+aws+tamil+full+course", type: "video" },
+      ],
       phases: [
         { 
           id: "cl-p1", title: "Cloud Foundations", description: "Cloud basics", 
@@ -181,6 +205,12 @@ export const cloudDomain: Domain = {
       description: "Automate code delivery pipelines and configure infrastructure as code.", 
       difficulty: "Intermediate", estimatedTime: "4-6 months", icon: "Settings", 
       tags: ["GitHub Actions", "Terraform", "Automation"],
+      resources: [
+        { title: "DevOps Full Course – TechWorld with Nana", url: "https://www.youtube.com/watch?v=0yWAtQ6wYNM", type: "video" },
+        { title: "GitHub Actions Documentation", url: "https://docs.github.com/en/actions", type: "docs" },
+        { title: "Terraform Official Tutorials", url: "https://developer.hashicorp.com/terraform/tutorials", type: "docs" },
+        { title: "DevOps Tamil Full Course", url: "https://www.youtube.com/results?search_query=devops+CI+CD+tamil+full+course", type: "video" },
+      ],
       phases: [
         { 
           id: "do-p1", title: "CI/CD & Automation", description: "Never deploy manually", 
@@ -208,6 +238,13 @@ export const cloudDomain: Domain = {
       description: "Master containerization and container orchestration for massive scale.", 
       difficulty: "Advanced", estimatedTime: "3-5 months", icon: "Box", 
       tags: ["Docker", "K8s", "Microservices"],
+      resources: [
+        { title: "Docker Full Course – TechWorld with Nana", url: "https://www.youtube.com/watch?v=3c-iBn73dDE", type: "video" },
+        { title: "Kubernetes Full Course – TechWorld with Nana", url: "https://www.youtube.com/watch?v=X48VuDVv0do", type: "video" },
+        { title: "Docker Official Documentation", url: "https://docs.docker.com/get-started/", type: "docs" },
+        { title: "Kubernetes Official Tutorials", url: "https://kubernetes.io/docs/tutorials/", type: "docs" },
+        { title: "Docker Kubernetes Tamil Tutorial", url: "https://www.youtube.com/results?search_query=docker+kubernetes+tamil+full+course", type: "video" },
+      ],
       phases: [
         { 
           id: "dk-p1", title: "Containers & Orchestration", description: "Boxing up applications", 
