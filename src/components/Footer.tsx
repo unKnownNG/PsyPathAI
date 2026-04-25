@@ -17,12 +17,15 @@ export default function Footer() {
                 <div style={{ width: "32px", height: "32px", borderRadius: "10px", background: "linear-gradient(135deg, #6366f1, #34d399)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <Flame style={{ width: "16px", height: "16px", color: "#fff" }} />
                 </div>
-                <span className="font-bold font-heading" style={{ fontSize: "1.1rem", color: "#f1f5f9" }}>
-                  PsyPath<span className="gradient-text">AI</span>
-                </span>
+                <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+                  <span className="font-bold font-heading" style={{ fontSize: "1.1rem", color: "#f1f5f9" }}>
+                    PsyPath<span className="gradient-text">AI</span>
+                  </span>
+                  <span style={{ fontSize: "0.58rem", color: "#64748b", letterSpacing: "0.04em", marginTop: "2px" }}>Psychology·Path·AI</span>
+                </div>
               </Link>
               <p className="text-muted" style={{ fontSize: "0.88rem", maxWidth: "340px", lineHeight: 1.7, marginBottom: "20px" }}>
-                Your personalized career compass for navigating the world of engineering and technology. Built for students, by students.
+                A <strong style={{ color: "#818cf8" }}>psychology-driven</strong> career compass for engineering students — using your MBTI personality & Holland Code to chart the path that truly fits you.
               </p>
               <div style={{ display: "flex", gap: "10px" }}>
                 {[Mail, ExternalLink, Globe].map((Icon, i) => (

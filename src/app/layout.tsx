@@ -22,9 +22,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PsyPathAI — Personalized Career Roadmaps for Engineers",
+  title: "PsyPathAI (Psychology-Path-AI) — Psychology-Driven Career Roadmaps for Engineers",
   description:
-    "Discover your ideal engineering career path with personality-driven recommendations, visual roadmaps, and AI-powered guidance.",
+    "Psychology-Path-AI uses your MBTI personality type and Holland Code to recommend the perfect engineering career path. Discover personalised roadmaps, AI career guidance, and science-backed recommendations.",
 };
 
 export default function RootLayout({

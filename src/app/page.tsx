@@ -68,7 +68,7 @@ export default function HomePage() {
 
   const chatPreview = [
     { role: "user", text: "What career path suits an INTJ who loves problem-solving?" },
-    { role: "bot", text: "Based on your INTJ profile, I'd recommend System Design or ML Engineering — your strategic thinking shines there! 🚀" },
+    { role: "bot", text: "Your INTJ psychology and Investigative Holland Code point strongly to System Design or ML Engineering — your strategic, analytical thinking is a perfect fit there! 🚀" },
   ];
 
   return (
@@ -80,7 +80,7 @@ export default function HomePage() {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <span className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400" style={{ padding: "8px 20px", borderRadius: "999px", background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", marginBottom: "32px", display: "inline-flex" }}>
               <Sparkles className="w-4 h-4" />
-              AI-Powered Career Guidance for Engineers
+              Psychology-Driven AI Career Guidance for Engineers
             </span>
           </motion.div>
 
@@ -90,10 +90,11 @@ export default function HomePage() {
             className="font-bold font-heading"
             style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)", lineHeight: 1.1, marginTop: "32px", marginBottom: "28px" }}
           >
-            Forge Your{" "}
+            Forge Your
+            <br />
             <span className="gradient-text">Engineering</span>
-            <br className="hidden sm:block" />
-            {" "}Career Path
+            <br />
+            Career Path
           </motion.h1>
 
           <motion.p
@@ -222,8 +223,9 @@ export default function HomePage() {
                 Meet <span className="gradient-text">CareerBot</span>
               </motion.h2>
               <motion.p variants={fadeUp} custom={2} className="text-muted" style={{ lineHeight: 1.7, marginBottom: "32px", fontSize: "0.95rem" }}>
-                Your personal AI career advisor that understands your personality, goals, and learning style.
-                Get customised milestone plans, resource recommendations, and career advice.
+                Your personal AI career advisor that uses <strong style={{ color: "#34d399" }}>psychology</strong> to truly understand you —
+                your MBTI type, Holland Code, and learning style. Get customised milestone plans,
+                resource recommendations, and science-backed career advice.
               </motion.p>
               <motion.div variants={fadeUp} custom={3}>
                 <Link href="/bot" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "14px 28px", borderRadius: "14px", background: "linear-gradient(135deg, #10b981, #059669)", color: "#fff", fontWeight: 600, fontSize: "0.95rem" }}>
