@@ -667,7 +667,7 @@ export const languagesDomain: Domain = {
         { title: "Official Java Tutorials – Oracle", url: "https://docs.oracle.com/javase/tutorial/", type: "docs" },
         { title: "Amigoscode – Java Tutorials", url: "https://www.youtube.com/@amigoscode", type: "course" },
         { title: "Spring Boot Full Course – freeCodeCamp", url: "https://www.youtube.com/watch?v=9SGDpanrc8U", type: "video" },
-        { title: "Java Full Course Tamil", url: "https://www.youtube.com/results?search_query=java+programming+full+course+tamil+beginners", type: "video" },
+        { title: "Java Full Course Tamil", url: "https://youtu.be/kGxSyqKbzsc?si=KrM_OnTSWLk2kjoB", type: "video" },
       ],
       phases: [
         {
