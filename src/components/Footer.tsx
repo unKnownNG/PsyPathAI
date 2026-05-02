@@ -31,7 +31,7 @@ export default function Footer() {
                 {[
                   { Icon: Mail, href: "mailto:daiyaan.dev@gmail.com" },
                   { Icon: Globe, href: "https://psypath.ai" },
-                  { Icon: ExternalLink, href: "https://github.com/unKnownNG" }
+                  { Icon: ExternalLink, href: "https://github.com/unKnownNG/PsyPathAI" }
                 ].map((item, i) => (
                   <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#111827", border: "1px solid rgba(148,163,184,0.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "#cbd5e1", textDecoration: "none" }}>
                     <item.Icon style={{ width: "16px", height: "16px" }} />
