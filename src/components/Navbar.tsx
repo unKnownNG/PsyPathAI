@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Flame, Menu, X } from "lucide-react";
+import { Compass, Menu, X } from "lucide-react";
 import { useState } from "react";
 import AuthButton from "@/components/AuthButton";
 
@@ -28,7 +28,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
             <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "linear-gradient(135deg, #6366f1, #34d399)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Flame style={{ width: "20px", height: "20px", color: "#fff" }} />
+              <Compass style={{ width: "20px", height: "20px", color: "#fff" }} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
               <span className="font-bold font-heading" style={{ fontSize: "1.25rem", color: "#f1f5f9" }}>

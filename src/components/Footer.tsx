@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { Flame, Mail, Globe, ExternalLink, Heart, X } from "lucide-react";
+import { Compass, Mail, Globe, ExternalLink, Heart, X } from "lucide-react";
 
 export default function Footer() {
   const [showSeniorMessage, setShowSeniorMessage] = useState(false);
@@ -15,7 +15,7 @@ export default function Footer() {
             <div>
               <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", marginBottom: "20px" }}>
                 <div style={{ width: "32px", height: "32px", borderRadius: "10px", background: "linear-gradient(135deg, #6366f1, #34d399)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Flame style={{ width: "16px", height: "16px", color: "#fff" }} />
+                  <Compass style={{ width: "16px", height: "16px", color: "#fff" }} />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
                   <span className="font-bold font-heading" style={{ fontSize: "1.1rem", color: "#f1f5f9" }}>
