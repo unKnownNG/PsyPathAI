@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, ArrowRight, User, Brain, Briefcase, BookOpen, Heart,
-  Sparkles, CheckCircle2, ChevronRight, LogIn, Loader2,
+  Sparkles, CheckCircle2, ChevronRight, LogIn, Loader2, MessageCircle,
 } from "lucide-react";
 import { mbtiQuestions, likertOptions, hollandOptions, learningStyleOptions, computeMBTI, getPersonalityMapping } from "@/data/quiz";
 import DynamicIcon from "@/components/DynamicIcon";
@@ -253,30 +253,24 @@ export default function OnboardingPage() {
             <p className="text-muted" style={{ fontSize: "0.9rem", lineHeight: 1.7 }}>{personality.description}</p>
           </div>
 
-          <div className="glass-card" style={{ padding: "28px", marginBottom: "40px" }}>
-            <h3 className="font-bold font-heading" style={{ marginBottom: "20px", display: "flex", alignItems: "center", gap: "8px", fontSize: "1rem" }}>
-              <CheckCircle2 className="text-emerald-400" style={{ width: "20px", height: "20px" }} /> Top Recommended Paths
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {personality.recommendedPaths.map((p, i) => (
-                <motion.div key={p} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }}
-                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px", borderRadius: "12px", background: "rgba(17,24,39,0.8)", border: "1px solid rgba(148,163,184,0.1)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    <span style={{ width: "28px", height: "28px", borderRadius: "8px", background: "rgba(99,102,241,0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#818cf8", fontSize: "0.75rem", fontWeight: 700 }}>{i + 1}</span>
-                    <span style={{ fontSize: "0.9rem", fontWeight: 500, textTransform: "capitalize" }}>{p.replace(/-/g, " ")}</span>
-                  </div>
-                  <ChevronRight className="text-muted" style={{ width: "16px", height: "16px" }} />
-                </motion.div>
-              ))}
+          <div className="glass-card" style={{ padding: "32px", marginBottom: "40px", textAlign: "center", background: "linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(16,185,129,0.05) 100%)", border: "1px solid rgba(99,102,241,0.2)" }}>
+            <div style={{ width: "56px", height: "56px", borderRadius: "16px", background: "rgba(17,24,39,0.8)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+              <Brain style={{ width: "28px", height: "28px", color: "#818cf8" }} />
             </div>
+            <h3 className="font-bold font-heading" style={{ fontSize: "1.25rem", marginBottom: "12px", color: "#f8fafc" }}>
+              Unlock Your Perfect Career Path
+            </h3>
+            <p className="text-muted" style={{ fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "24px", maxWidth: "400px", margin: "0 auto 24px" }}>
+              Our AI CareerBot has analyzed your unique psychological profile. Chat with it now to get your highly personalized roadmap recommendations and ask any questions!
+            </p>
+            <Link href="/bot" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "14px 28px", borderRadius: "14px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", fontWeight: 600, textDecoration: "none", transition: "all 0.2s" }}>
+              <MessageCircle style={{ width: "18px", height: "18px" }} /> Talk to CareerBot Now
+            </Link>
           </div>
 
-          <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/roadmaps" style={{ padding: "14px 28px", borderRadius: "14px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", fontWeight: 600, textDecoration: "none", textAlign: "center" }}>
-              Explore Roadmaps
-            </Link>
-            <Link href="/bot" style={{ padding: "14px 28px", borderRadius: "14px", border: "1px solid rgba(148,163,184,0.2)", background: "rgba(17,24,39,0.6)", color: "#f1f5f9", fontWeight: 600, textDecoration: "none", textAlign: "center" }}>
-              Talk to CareerBot
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Link href="/roadmaps" style={{ color: "#94a3b8", fontSize: "0.9rem", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.color = "#cbd5e1"} onMouseLeave={(e) => e.currentTarget.style.color = "#94a3b8"}>
+              Or explore all roadmaps manually →
             </Link>
           </div>
         </motion.div>

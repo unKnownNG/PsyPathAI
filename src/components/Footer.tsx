@@ -28,9 +28,13 @@ export default function Footer() {
                 A <strong style={{ color: "#818cf8" }}>psychology-driven</strong> career compass for engineering students — using your MBTI personality & Holland Code to chart the path that truly fits you.
               </p>
               <div style={{ display: "flex", gap: "10px" }}>
-                {[Mail, ExternalLink, Globe].map((Icon, i) => (
-                  <a key={i} href="#" style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#111827", border: "1px solid rgba(148,163,184,0.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "#cbd5e1", textDecoration: "none" }}>
-                    <Icon style={{ width: "16px", height: "16px" }} />
+                {[
+                  { Icon: Mail, href: "mailto:daiyaan.dev@gmail.com" },
+                  { Icon: Globe, href: "https://psypath.ai" },
+                  { Icon: ExternalLink, href: "https://github.com/unKnownNG" }
+                ].map((item, i) => (
+                  <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#111827", border: "1px solid rgba(148,163,184,0.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "#cbd5e1", textDecoration: "none" }}>
+                    <item.Icon style={{ width: "16px", height: "16px" }} />
                   </a>
                 ))}
               </div>
@@ -60,16 +64,16 @@ export default function Footer() {
           <div style={{ borderTop: "1px solid rgba(148,163,184,0.1)", marginTop: "40px", paddingTop: "28px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
             <p className="text-muted-dark" style={{ fontSize: "0.78rem" }}>© 2026 PsyPathAI. All rights reserved.</p>
             <p className="text-muted-dark" style={{ fontSize: "0.78rem", display: "flex", alignItems: "center", gap: "4px" }}>
-              Made with 
-              <button 
+              Made with
+              <button
                 onClick={() => setShowSeniorMessage(true)}
                 style={{ background: "transparent", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", transition: "transform 0.2s" }}
-                title="Message from Senior"
+                title="Message"
                 onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.2)"}
                 onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
               >
                 <Heart style={{ width: "14px", height: "14px", color: "#ef4444", fill: "#ef4444" }} />
-              </button> 
+              </button>
               for engineering students
             </p>
           </div>
@@ -79,7 +83,7 @@ export default function Footer() {
       {/* Message Modal */}
       {showSeniorMessage && (
         <div style={{
-          position: "fixed", top: 0, left: 0, width: "100%", height: "100%", 
+          position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
           background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)",
           display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999,
           padding: "20px"
@@ -87,13 +91,13 @@ export default function Footer() {
           <div style={{
             background: "#0f172a", border: "1px solid rgba(148,163,184,0.2)",
             borderRadius: "16px", padding: "40px", maxWidth: "550px", width: "100%",
-            boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5), 0 0 40px rgba(239,68,68,0.1)", 
+            boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5), 0 0 40px rgba(239,68,68,0.1)",
             position: "relative"
           }} onClick={e => e.stopPropagation()}>
             {/* Top decorative gradient line */}
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: "linear-gradient(90deg, #6366f1, #ef4444, #34d399)", borderTopLeftRadius: "16px", borderTopRightRadius: "16px" }} />
-            
-            <button 
+
+            <button
               onClick={() => setShowSeniorMessage(false)}
               style={{ position: "absolute", top: "20px", right: "20px", background: "transparent", border: "none", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", width: "32px", height: "32px", borderRadius: "50%", transition: "background 0.2s" }}
               onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
@@ -103,14 +107,14 @@ export default function Footer() {
             </button>
             <h3 style={{ fontSize: "1.4rem", color: "#f8fafc", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px", fontWeight: 700 }}>
               <Heart fill="#ef4444" color="#ef4444" size={24} />
-              Message from Senior
+              Message
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               <p style={{ color: "#cbd5e1", lineHeight: 1.7, fontSize: "1.05rem" }}>
-                Hey Juniors! Welcome to your career journey in tech. The path ahead might seem challenging at times, but remember that every expert was once a beginner. Keep learning, stay curious, and never be afraid to ask for help or make mistakes — that's how you grow. 
+                Hey there! Welcome to your career journey in tech. The path ahead might seem challenging at times, but remember that every expert was once exactly where you are now—a beginner. Keep learning, stay intensely curious, and never be afraid to make mistakes or ask for help. That is the true secret to growth.
               </p>
               <p style={{ color: "#cbd5e1", lineHeight: 1.7, fontSize: "1.05rem" }}>
-                Wishing you all the absolute best for your career and future endeavors!
+                Believe in yourself and your potential. Good luck with your career, and may you build the future you've always dreamed of!
               </p>
               <p style={{ color: "#94a3b8", lineHeight: 1.7, fontSize: "0.95rem", fontStyle: "italic", marginTop: "8px", borderLeft: "3px solid rgba(239,68,68,0.5)", paddingLeft: "16px" }}>
                 A huge thank you to everyone who supported the creation of this website. Your insights, guidance, and feedback were instrumental in bringing this platform to life for our engineering community.
