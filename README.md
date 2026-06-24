@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧭 CareerForge
+# 🧭 PsyPathAI
 
 **AI-powered, psychology-aware career guidance for engineering college students**
 
@@ -15,11 +15,11 @@
 
 ---
 
-## ✨ What is CareerForge?
+## ✨ What is PsyPathAI?
 
-CareerForge helps engineering students figure out **what career path actually fits them** — not just based on generic advice, but by combining psychological profiling (MBTI + Holland code) with AI-driven, personalized chat guidance.
+PsyPathAI helps engineering students figure out **what career path actually fits them** — not just based on generic advice, but by combining psychological profiling (MBTI + Holland code) with [...]
 
-Students take a quick quiz, get a personality + career analysis, and can then chat with **CareerBot** — an AI advisor that knows their profile and gives advice that resonates with *how they think*.
+Students take a quick quiz, get a personality + career analysis, and can then chat with **CareerBot** — an AI advisor that knows their profile and gives advice that resonates with *how they thin[...]
 
 ---
 
@@ -37,7 +37,7 @@ Students take a quick quiz, get a personality + career analysis, and can then ch
 ## 🏗️ Architecture
 
 ```
-careerforge/
+psypathai/
 ├── src/
 │   ├── app/
 │   │   ├── page.tsx              # Landing page
@@ -85,8 +85,8 @@ careerforge/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/careerforge.git
-cd careerforge
+git clone https://github.com/YOUR_USERNAME/psypathai.git
+cd psypathai
 ```
 
 ### 2. Install Dependencies
