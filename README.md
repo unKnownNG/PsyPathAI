@@ -17,9 +17,7 @@
 
 ## ✨ What is PsyPathAI?
 
-PsyPathAI helps engineering students figure out **what career path actually fits them** — not just based on generic advice, but by combining psychological profiling (MBTI + Holland code) with [...]
-
-Students take a quick quiz, get a personality + career analysis, and can then chat with **CareerBot** — an AI advisor that knows their profile and gives advice that resonates with *how they thin[...]
+PsyPathAI is an AI-powered career guidance platform for engineering students that goes beyond generic advice — it combines psychological profiling (MBTI + Holland Code) with personalized career path roadmaps to help students figure out what actually fits them. Students take a short quiz, get a personality and career-fit analysis, receive a step-by-step roadmap to reach their target role, and can chat with an AI advisor that understands their profile and adapts to how they think.
 
 ---
 
